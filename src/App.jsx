@@ -1,25 +1,36 @@
+import { HashRouter as Router, Routes, Route } from 'react-router-dom'
+
+// import { Home } from './pages/Home'
+import { MailIndex } from './pages/MailIndex'
+import { Header } from './cmps/Header'
+import { Nav } from './cmps/Nav'
 import './App.css'
 
 function App() {
 
   return (
-    <section className='main-app'>
-      <header className="app-header">
-        <section className="container">
-          <h1>Mister Email</h1>
-        </section>
-      </header>
+    <Router>
+      <section className='main-app'>
+        <header className="app-header">
+          <section className="container">
+            <Header />
+          </section>
+        </header>
 
-      <main className='container'>
-        {/* <Home /> */}
-      </main>
+        <div className="app-nav">
+          <Nav />
+        </div>
 
-      <footer>
-        <section className="container">
-          Iris Oron &copy;
-        </section>
-      </footer>
-    </section>
+        <main className='main'>
+          <div className='container'>
+            <Routes>
+              <Route path="/:filter" element={<MailIndex />} />
+            </Routes>
+          </div>
+        </main>
+
+      </section>
+    </Router>
   )
 }
 
