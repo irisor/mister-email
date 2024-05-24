@@ -1,7 +1,7 @@
 import { HashRouter as Router, Routes, Route } from 'react-router-dom'
 
 // import { Home } from './pages/Home'
-import { MailIndex } from './pages/MailIndex'
+import { EmailIndex } from './pages/EmailIndex'
 import { Header } from './cmps/Header'
 import { Nav } from './cmps/Nav'
 import './App.css'
@@ -24,7 +24,7 @@ function App() {
         <main className='main'>
           <div className='container'>
             <Routes>
-              <Route path="/:filter" element={<MailIndex />} />
+              <Route path="/:filter" element={<EmailIndex />} />
             </Routes>
           </div>
         </main>
