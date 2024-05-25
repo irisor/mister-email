@@ -2,14 +2,16 @@ import { useEffect, useState } from "react"
 import { useParams } from "react-router"
 import { emailService } from "../services/email.service.js"
 import { EmailList } from "../cmps/EmailList.jsx";
-import { EmailHeader } from "../cmps/EmailHeader.jsx";
+// import { EmailHeader } from "../cmps/EmailHeader.jsx";
+import { EmailFilter } from "../cmps/EmailFilter.jsx";
 import { EmailFolderList } from "../cmps/EmailFolderList.jsx";
+import { NavLink } from "react-router-dom";
 
 export function EmailIndex() {
 
     const [emails, setEmails] = useState(null)
-	const folder = useParams().folder
-  
+    const folder = useParams().folder
+
     useEffect(() => {
         loadMails(folder)
     }, [folder])
@@ -37,13 +39,15 @@ export function EmailIndex() {
     return (
         <section className="email-index">
             <header className="email-index__header">
-            <section className="container">
-                <EmailHeader />
-            </section>
+                <section className="container">
+                    <div className="header__menu"></div>
+                    <NavLink className="header__logo" to="/" src="/images/logo.png"></NavLink>
+                    <EmailFilter />
+                </section>
             </header>
 
             <div className="email-index__folders">
-            <EmailFolderList />
+                <EmailFolderList />
             </div>
             <section className="email-index__list">
                 <EmailList emails={emails} onRemoveMail={onRemoveMail} />
