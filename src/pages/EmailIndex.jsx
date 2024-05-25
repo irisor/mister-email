@@ -2,19 +2,22 @@ import { useEffect, useState } from "react"
 import { useParams } from "react-router"
 import { emailService } from "../services/email.service.js"
 import { EmailList } from "../cmps/EmailList.jsx";
+import { EmailHeader } from "../cmps/EmailHeader.jsx";
+import { EmailFolderList } from "../cmps/EmailFolderList.jsx";
 
 export function EmailIndex() {
 
     const [emails, setEmails] = useState(null)
-	const filter = useParams().filter
-
+	const folder = useParams().folder
+  
     useEffect(() => {
-        loadMails()
-    }, [filter])
+        loadMails(folder)
+    }, [folder])
 
-    async function loadMails() {
+    async function loadMails(folder) {
         try {
-            const emails = await emailService.query(filter)
+            const filterBy = emailService.getDefaultFilter({ folder })
+            const emails = await emailService.query(filterBy)
             setEmails(emails)
         } catch (error) {
             console.log('Having issues with loading e-mails:', error)
@@ -32,8 +35,19 @@ export function EmailIndex() {
 
     if (!emails) return <div>Loading...</div>
     return (
-        <section className="mail-index">
-            <EmailList emails={emails} onRemoveMail={onRemoveMail} />
+        <section className="email-index">
+            <header className="email-index__header">
+            <section className="container">
+                <EmailHeader />
+            </section>
+            </header>
+
+            <div className="email-index__folders">
+            <EmailFolderList />
+            </div>
+            <section className="email-index__list">
+                <EmailList emails={emails} onRemoveMail={onRemoveMail} />
+            </section>
         </section>
     )
 }

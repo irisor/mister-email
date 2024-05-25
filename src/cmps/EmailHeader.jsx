@@ -1,4 +1,4 @@
-export function Header() {
+export function EmailHeader() {
     return (
         <section className="header">
             

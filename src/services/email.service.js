@@ -7,6 +7,7 @@ export const emailService = {
     remove,
     getById,
     createEmail,
+    getDefaultFilter,
 }
 
 const loggedinUser = {
@@ -20,16 +21,16 @@ const STORAGE_KEY = 'mailDB'
 _createMails()
 
 async function query(filterBy) {
-    let mails = await storageService.query(STORAGE_KEY)
-    // if (filterBy) {
-    //     let { type, maxBatteryStatus, minBatteryStatus, model } = filterBy
-    //     maxBatteryStatus = maxBatteryStatus || Infinity
-    //     minBatteryStatus = minBatteryStatus || 0
-    //     mails = mails.filter(mail => mail.type.toLowerCase().includes(type.toLowerCase()) && mail.model.toLowerCase().includes(model.toLowerCase())
-    //         && (mail.batteryStatus < maxBatteryStatus)
-    //         && mail.batteryStatus > minBatteryStatus)
-    // }
-    return mails
+    let emails = await storageService.query(STORAGE_KEY)
+    if (filterBy) {
+        let { status, readStatus, isStarred, text } = filterBy
+        emails = emails.filter(email => 
+            (status === 'All' || email.status === status) && 
+            (readStatus === 'All' || email.isRead && readStatus === 'Read' || !email.isRead && readStatus === 'Unread') && 
+            (!isStarred || email.isStarred) &&
+            (!text || email.text.includes(text))
+    )}
+    return emails
 }
 
 function getById(id) {
@@ -57,6 +58,15 @@ function createEmail(model = '', type = '', batteryStatus = 100) {
     }
 }
 
+function getDefaultFilter({ folder='inbox', readStatus="All", isStarred=false, text=null }) {
+    return {
+       status: folder != 'starred' ? folder : 'All',
+       readStatus,
+       isStarred: isStarred || folder === 'starred' ? true : false,
+       text
+    }
+}
+
 function _createMails() {
     let emails = utilService.loadFromStorage(STORAGE_KEY)
     if (!emails || !emails.length) {
@@ -81,7 +91,3 @@ function _createMails() {
         utilService.saveToStorage(STORAGE_KEY, emails)
     }
 }
-
-
-
-
