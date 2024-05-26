@@ -4,7 +4,7 @@ import { EmailPreview } from "./EmailPreview";
 export function EmailList({ emails }) {
 
     return (
-        <ul className="mail-list">
+        <ul className="email-list">
             {emails.map(email =>
                 <li key={email.id}>
                     <EmailPreview email={email} />

@@ -3,7 +3,6 @@ import { HashRouter as Router, Routes, Route } from 'react-router-dom'
 import { HomePage } from './pages/HomePage'
 import { AboutUs } from './pages/AboutUs'
 import { EmailIndex } from './pages/EmailIndex'
-import './App.css'
 
 function App() {
 

@@ -3,13 +3,23 @@ import { NavLink } from 'react-router-dom'
 export function EmailFolderList() {
 
 	return (
-		<section className="email-foler-list">
-			<nav>
-				<NavLink to='/mail/inbox'>Inbox</NavLink>
-				<NavLink to='/mail/starred'>Starred</NavLink>
-				<NavLink to='/mail/sent'>Sent</NavLink>
-				<NavLink to='/mail/draft'>Draft</NavLink>
-			</nav>
-		</section>
+		<nav className="email-folder-list">
+			<NavLink className="email-folder-list__item" to='/mail/inbox'>
+				<div className="email-folder-list__item-icon inbox"></div>
+				<span className='email-folder-list__item-text'>Inbox</span>
+			</NavLink>
+			<NavLink className="email-folder-list__item" to='/mail/starred'>
+				<div className="email-folder-list__item-icon starred"></div>
+				<span className='email-folder-list__item-text'>Starred</span>
+			</NavLink>
+			<NavLink className="email-folder-list__item" to='/mail/sent'>
+				<div className="email-folder-list__item-icon sent"></div>
+				<span className='email-folder-list__item-text'>Sent</span>
+			</NavLink>
+			<NavLink className="email-folder-list__item" to='/mail/draft'>
+				<div className="email-folder-list__item-icon draft"></div>
+				<span className='email-folder-list__item-text'>Draft</span>
+			</NavLink>
+		</nav>
 	)
 }

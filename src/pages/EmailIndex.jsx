@@ -41,20 +41,19 @@ export function EmailIndex() {
     return (
         <section className="email-index">
             <header className="email-index__header">
-                <section className="container">
+                <div className="email-index__menu-logo">
                     <div className="email-index__menu" aria-expanded="false" aria-label="Main menu" role="button">
                         <svg focusable="false" viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"></path></svg>
                     </div>
                     <NavLink className="email-index__logo" to="/">
-                        <img src={imgUrl} />
+                        <img src={imgUrl} width="109" height="40" alt="gmail logo" />
                     </NavLink>
-                    <EmailFilter />
-                </section>
+                </div>
+                <EmailFilter />
             </header>
 
-            <div className="email-index__folders">
-                <EmailFolderList />
-            </div>
+            <EmailFolderList />
+            
             <section className="email-index__list">
                 <EmailList emails={emails} onRemoveMail={onRemoveMail} />
             </section>
