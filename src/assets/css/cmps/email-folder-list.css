@@ -6,9 +6,7 @@
 	.email-folder-list__item {
 		align-items: center;
 		border-radius: 0 16px 16px 0;
-		color: rgb(32, 33, 36);
 		display: flex;
-		font-size: 0.875rem;
 		gap: 18px;
 		height: 32px;
 		line-height: 32px;
@@ -28,19 +26,19 @@
 		width: 20px;
 		
 		&.inbox {
-			background-image: url(https://ssl.gstatic.com/ui/v1/icons/mail/gm3/1x/inbox_baseline_nv700_20dp.png);
+			background-image: url(../../images/icons/inbox.png);
 		}
 		
 		&.starred {
-			background-image: url(https://ssl.gstatic.com/ui/v1/icons/mail/gm3/1x/star_baseline_nv700_20dp.png);
+			background-image: url(../../images/icons/starred.png);
 		}
 
 		&.sent {
-			background-image: url(https://ssl.gstatic.com/ui/v1/icons/mail/gm3/1x/send_baseline_nv700_20dp.png);
+			background-image: url(../../images/icons/sent.png);
 		}
 
 		&.draft {
-			background-image: url(https://ssl.gstatic.com/ui/v1/icons/mail/gm3/1x/draft_baseline_nv700_20dp.png);
+			background-image: url(../../images/icons/draft.png);
 		}
 	}
 	
@@ -61,20 +59,20 @@
 	}
 	
 	.email-folder-list__item.active .email-folder-list__item-icon {
-		&.inbox{
-			background-image: url(https://ssl.gstatic.com/ui/v1/icons/mail/gm3/1x/inbox_fill_baseline_p900_20dp.png);
+		&.inbox {
+			background-image: url(../../images/icons/inbox-selected.png);
 		}
-
-		&.starred{
-			background-image: url(//ssl.gstatic.com/ui/v1/icons/mail/gm3/1x/star_fill_baseline_p900_20dp.png);
+		
+		&.starred {
+			background-image: url(../../images/icons/starred-selected.png);
 		}
 
 		&.sent {
-			background-image: url(https://ssl.gstatic.com/ui/v1/icons/mail/gm3/1x/send_fill_baseline_p900_20dp.png);
+			background-image: url(../../images/icons/sent-selected.png);
 		}
 
 		&.draft {
-			background-image: url(https://ssl.gstatic.com/ui/v1/icons/mail/gm3/1x/draft_fill_baseline_p900_20dp.png);
+			background-image: url(../../images/icons/draft-selected.png);
 		}
 	}
 }

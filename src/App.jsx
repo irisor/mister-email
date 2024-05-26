@@ -14,7 +14,6 @@ function App() {
               <Route path="/" element={<HomePage />} />
               <Route path="/home" element={<HomePage />} />
               <Route path="/about" element={<AboutUs />} />
-              <Route path="/email" element={<EmailIndex />} />
               <Route path="/mail/:folder" element={<EmailIndex />} />
             </Routes>
           </div>

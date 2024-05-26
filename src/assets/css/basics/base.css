@@ -2,7 +2,7 @@
     --mister-email-background: #f6f8fc;
     --mister-email-background-secondary: #eaf1fb;
     --mister-email-text: #202124;
-    --mister-email-text-secondary: #000;
+    --mister-email-text-secondary: #5f6368;
     --mister-email-hover: rgba(32, 33, 36, 0.059);
     --mister-email-active: #d3e3fd;
 }
@@ -12,7 +12,7 @@
 }
 
 html {
-    font-size: 16px;
+    font-size: 0.875rem;
     scroll-behavior: smooth;
 }
 
@@ -61,6 +61,12 @@ input {
     text-align: inherit;
 }
 
+select,
+option {
+    font-family: inherit;
+    font-size: inherit;
+}
+
 /* MAC like scrollbar */
 ::-webkit-scrollbar {
     width: 8px;
@@ -93,7 +99,7 @@ input {
     width: 100%;
 }
 
-.main-app > footer {
+.main-app>footer {
     background-color: #111;
     color: white;
 }

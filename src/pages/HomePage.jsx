@@ -11,7 +11,7 @@ export function HomePage() {
 				<h3>you’re welcome to engage!</h3>
 			</div>
 			<div className="home__enter">
-				<NavLink to='/email'>Enter</NavLink>
+				<NavLink to='/mail/inbox'>Enter</NavLink>
 			</div>
 			<div className='home__about'>
 				<NavLink to='/about'>About</NavLink>
