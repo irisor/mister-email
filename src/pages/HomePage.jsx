@@ -7,7 +7,8 @@ export function HomePage() {
 			<div className="home__text">
 				<h1>I am writing a letter</h1>
 				<h2>I’ve come to the end of the page</h2>
-				<h3>To keep you from waiting forever, you’re welcome to engage!</h3>
+				<h3>To keep you from waiting forever,</h3>
+				<h3>you’re welcome to engage!</h3>
 			</div>
 			<div className="home__enter">
 				<NavLink to='/email'>Enter</NavLink>
