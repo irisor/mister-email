@@ -1,18 +1,24 @@
 import { Link } from "react-router-dom";
 
-export function EmailPreview({ email, isSelected=false }) {
+export function EmailPreview({ email, isSelected = false, isHovered=true }) {
 
     return (
-        <article className={`email-preview ${email.isRead ? 'read' : ''} ${isSelected ? 'selected' : ''}`} key={email.id} id="email-preview">
-			<button className={`email-preview__checkbox ${isSelected ? 'selected' : ''}`} onClick={() => console.log('select button clicked')}></button>
-			<button className={`email-preview__star ${email.isStarred ? 'starred' : ''}`} onClick={() => console.log('star button clicked')}></button>
+        <article className={`email-preview ${email.isRead ? 'read' : ''} ${isSelected ? 'selected' : ''} ${isHovered ? 'hovered' : ''}`} key={email.id} id="email-preview">
             <Link className="email-preview__link" to={`/email/${email.id}`}>
-				<div>{email.fromFullname}</div>
-				<div>
+                <button className={`email-preview__checkbox`} onClick={() => console.log('select button clicked')}></button>
+                <button className={`email-preview__star ${email.isStarred ? 'starred' : ''}`} onClick={() => console.log('star button clicked')}></button>
+                <div className="email-preview__from">{email.fromFullname}</div>
+                <div className="email-preview__text">
                     <span className="email-preview__subject">{email.subject}</span>
                     <span className="email-preview__body">&nbsp;-&nbsp;{email.body}</span>
                 </div>
-				<div className="email-preview__date">{new Date(email.sentAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</div>
+                <div className="email-preview__date">{new Date(email.sentAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</div>
+                <div className="email-preview__actions">
+                    <button className="email-preview__action archive" onClick={() => console.log('archive button clicked')}></button>
+                    <button className="email-preview__action delete" onClick={() => console.log('delete button clicked')}></button>
+                    <button className="email-preview__action unread" onClick={() => console.log('unread button clicked')}></button>
+                    <button className="email-preview__action snooze" onClick={() => console.log('snooze button clicked')}></button>
+                </div>
             </Link>
         </article>
     )
