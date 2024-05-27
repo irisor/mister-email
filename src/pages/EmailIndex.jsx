@@ -37,6 +37,18 @@ export function EmailIndex() {
         }
     }
 
+    async function onStarClick(emailId) {
+        try {
+            await emailService.toggleStar(emailId)
+            setEmails(prevMails => prevMails.map(mail => {
+                if (mail.id === emailId) mail.isStarred = !mail.isStarred
+                return mail
+            }))
+        } catch (error) {
+            console.log('Having issues starring e-mail:', error)
+        }
+    }
+
     if (!emails) return <div>Loading...</div>
     return (
         <section className="email-index">
@@ -55,7 +67,7 @@ export function EmailIndex() {
             <EmailFolderList />
             
             <section className="email-index__list">
-                <EmailList emails={emails} onRemoveMail={onRemoveMail} />
+                <EmailList emails={emails} onRemoveMail={onRemoveMail} onStarClick={onStarClick}/>
             </section>
         </section>
     )

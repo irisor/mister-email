@@ -8,6 +8,7 @@ export const emailService = {
     getById,
     createEmail,
     getDefaultFilter,
+    toggleStar,
 }
 
 const loggedinUser = {
@@ -65,6 +66,12 @@ function getDefaultFilter({ folder='inbox', readStatus="All", isStarred=false, t
        isStarred: isStarred || folder === 'starred' ? true : false,
        text
     }
+}
+
+async function toggleStar(emailId) {
+    const email = await getById(emailId)
+    email.isStarred = !email.isStarred
+    save(email)
 }
 
 function _createMails() {
