@@ -4,12 +4,15 @@ import { EmailPreview } from "./EmailPreview";
 export function EmailList({ emails }) {
 
     return (
-        <ul className="email-list">
-            {emails.map(email =>
-                <li key={email.id}>
-                    <EmailPreview email={email} />
-                </li>
-            )}
-        </ul>
+        <section className="email-list">
+            <h2>Inbox</h2>
+            <ul className="email-list__list clean-list">
+                {emails.map(email =>
+                    <li key={email.id}>
+                        <EmailPreview email={email} />
+                    </li>
+                )}
+            </ul>
+        </section>
     )
 }

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 export function EmailPreview({ email, isSelected=false }) {
 
     return (
-        <article className={`email-preview ${email.isRead ? 'read' : ''} ${isSelected ? 'selected' : ''}`} key={email.id} id="robot-preview">
+        <article className={`email-preview ${email.isRead ? 'read' : ''} ${isSelected ? 'selected' : ''}`} key={email.id} id="email-preview">
 			<button className={`email-preview__checkbox ${isSelected ? 'selected' : ''}`} onClick={() => console.log('select button clicked')}></button>
 			<button className={`email-preview__star ${email.isStarred ? 'starred' : ''}`} onClick={() => console.log('star button clicked')}></button>
             <Link className="email-preview__link" to={`/email/${email.id}`}>
