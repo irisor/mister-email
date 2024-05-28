@@ -23,7 +23,9 @@ export function EmailPreview({ email, onStarClick }) {
                 <div className="email-preview__from">{email.fromFullname}</div>
                 <div className="email-preview__text">
                     <span className="email-preview__subject">{email.subject}</span>
-                    <span className="email-preview__body">&nbsp;-&nbsp;{email.body}</span>
+                    <span className="email-preview__body">
+                        <span className="email-preview__dash">&nbsp;-&nbsp;</span>{email.body}
+                    </span>
                 </div>
                 <div className="email-preview__date">{new Date(email.sentAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</div>
                 <div className="email-preview__actions">

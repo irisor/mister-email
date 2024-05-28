@@ -39,8 +39,41 @@
 		}
 
 		.email-preview__link {
-			grid-template-columns: 1fr 1fr 8fr 25fr 3fr 5fr;
+			@media (max-width: 840px) {
+				grid-template-areas:
+					"checkbox from . actions actions"
+					". text text . star";
+				grid-template-columns: 43px 1fr 1fr 136px 30px;
+			}
 		}
+
+		.email-preview__date {
+			@media (max-width: 840px) {
+				display: none;
+			}
+		}
+	}
+}
+
+.email-preview__link {
+	display: grid;
+	gap: 10px;
+	grid-template-areas: "checkbox star from text date actions";
+	grid-template-columns: 43px 30px 200px 1fr 72px;
+	padding: 10px 0 10px 20px;
+	position: relative;
+
+	&:hover {
+		box-shadow: inset 1px 0 0 #dadce0, inset -1px 0 0 #dadce0, 0 1px 2px 0 rgba(60, 64, 67, .3), 0 1px 3px 1px rgba(60, 64, 67, .15);
+		z-index: 2;
+	}
+
+	@media (max-width: 840px) {
+		gap: 0;
+		grid-template-areas:
+			"checkbox from date"
+			". text star";
+		grid-template-columns: 43px 1fr  72px;
 	}
 }
 
@@ -50,6 +83,7 @@
 	background-repeat: no-repeat;
 	background-size: 20px;
 	border-width: 0;
+	grid-area: checkbox;
 	height: 20px;
 	opacity: 0.32;
 	position: relative;
@@ -84,8 +118,10 @@
 
 .email-preview__star {
 	align-items: center;
+	align-self: end;
 	border: none;
 	display: inline-flex;
+	grid-area: star;
 	justify-content: center;
 	outline: none;
 	position: relative;
@@ -94,7 +130,7 @@
 	height: 20px;
 	margin: 0;
 	opacity: 0.32;
-	padding: 0;
+	padding: 0 0 2px 0;
 	top: 0;
 	width: 20px;
 
@@ -145,44 +181,60 @@
 	&.starred::before {
 		background-image: url(../../images/icons/star-starred.png);
 	}
-}
 
-.email-preview__link {
-	display: grid;
-	gap: 10px;
-	grid-template-columns: 1fr 1fr 8fr 25fr 3fr;
-	padding: 10px 0 10px 20px;
-	position: relative;
-
-	&:hover {
-		box-shadow: inset 1px 0 0 #dadce0, inset -1px 0 0 #dadce0, 0 1px 2px 0 rgba(60, 64, 67, .3), 0 1px 3px 1px rgba(60, 64, 67, .15);
-		z-index: 2;
+	@media (max-width: 840px) {
+		justify-self: end;
+		margin-right: 10px;
 	}
 }
 
 .email-preview__from {
+	grid-area: from;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
 }
 
 .email-preview__text {
+	grid-area: text;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
+
+	@media (max-width: 840px) {
+		display: flex;
+		flex-direction: column;
+	}
+}
+
+.email-preview__dash {
+	@media (max-width: 840px) {
+		display: none;
+	}
 }
 
 .email-preview__body {
 	color: var(--mister-email-text-secondary);
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.email-preview__subject {
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 .email-preview__date {
 	color: var(--mister-email-text-secondary);
+	justify-self: end;
+	margin-right: 10px;
 	white-space: nowrap;
 }
 
 .email-preview__actions {
+	grid-area: actions;
 	display: none;
+	justify-self: end;
 }
 
 .email-preview__action {
