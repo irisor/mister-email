@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { utilService } from "../services/util.service";
 
 export function EmailPreview({ email, onStarClick }) {
     const [isHovered, setIsHovered] = useState(false);
@@ -27,7 +28,7 @@ export function EmailPreview({ email, onStarClick }) {
                         <span className="email-preview__dash">&nbsp;-&nbsp;</span>{email.body}
                     </span>
                 </div>
-                <div className="email-preview__date">{new Date(email.sentAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</div>
+                <div className="email-preview__date">{utilService.displayDate(email.sentAt)}</div>
                 <div className="email-preview__actions">
                     <button className="email-preview__action archive" onClick={() => console.log('archive button clicked')}></button>
                     <button className="email-preview__action delete" onClick={() => console.log('delete button clicked')}></button>

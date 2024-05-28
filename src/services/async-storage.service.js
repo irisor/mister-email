@@ -7,7 +7,13 @@ export const storageService = {
 }
 
 function query(entityType, delay = 200) {
-    var entities = JSON.parse(localStorage.getItem(entityType)) || []
+    var entities = JSON.parse(localStorage.getItem(entityType), (key, value) => {
+        // Convert string that represents a date to Date object
+        if (typeof value === 'string' && /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z$/.test(value)) {
+            return new Date(value);
+        }
+        return value;
+    }) || []
     return new Promise(resolve => setTimeout(() => resolve(entities), delay))
 }
 
