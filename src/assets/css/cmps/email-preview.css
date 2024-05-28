@@ -43,7 +43,7 @@
 				grid-template-areas:
 					"checkbox from . actions actions"
 					". text text . star";
-				grid-template-columns: 43px 1fr 1fr 136px 30px;
+				grid-template-columns: 30px 1fr 1fr 136px 30px;
 			}
 		}
 
@@ -75,7 +75,7 @@
 	display: grid;
 	gap: 10px;
 	grid-template-areas: "checkbox star from text date actions";
-	grid-template-columns: 43px 30px 200px 1fr 72px;
+	grid-template-columns: 20px 20px 200px 1fr 72px;
 	padding: 10px 0 10px 20px;
 	position: relative;
 
@@ -89,7 +89,7 @@
 		grid-template-areas:
 			"checkbox from date"
 			". text star";
-		grid-template-columns: 43px 1fr  72px;
+		grid-template-columns: 30px 1fr  72px;
 	}
 }
 
