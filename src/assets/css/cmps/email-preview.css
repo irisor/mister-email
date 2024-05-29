@@ -68,6 +68,10 @@
 		.email-preview__date {
 			font-weight: normal;
 		}
+
+		.email-preview__action.unread {
+			background-image: url(../../images/icons/unread.png);
+		}
 	}
 }
 
@@ -301,7 +305,7 @@
 	}
 
 	&.unread {
-		background-image: url(../../images/icons/unread.png);
+		background-image: url(../../images/icons/read.png);
 	}
 
 	&.snooze {
