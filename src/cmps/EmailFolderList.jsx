@@ -1,9 +1,9 @@
 import { NavLink } from 'react-router-dom'
 
-export function EmailFolderList() {
+export function EmailFolderList({ onFoldersHover }) {
 
 	return (
-		<nav className="email-folder-list">
+		<nav className="email-folder-list" id="email-folder-list" onMouseEnter={() => onFoldersHover('start')} onMouseLeave={() => onFoldersHover('end')}>
 			<NavLink className="email-folder-list__item" to='/mail/inbox'>
 				<div className="email-folder-list__item-icon inbox"></div>
 				<span className='email-folder-list__item-text'>Inbox</span>

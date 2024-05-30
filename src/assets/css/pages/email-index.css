@@ -1,12 +1,12 @@
 .email-index {
 	background-color: var(--mister-email-background);
 	display: grid;
-	grid-template-areas: 
+	grid-template-areas:
 		"header header header"
 		"menu list ."
-		"menu . .";
-	grid-template-columns: 256px auto 56px;
-	grid-template-rows: 64px auto 16px;
+		". . .";
+	grid-template-columns: 256px 1fr 56px;
+	grid-template-rows: 64px 1fr 16px;
 	height: 100vh;
 
 	.email-index__header {
