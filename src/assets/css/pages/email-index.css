@@ -9,6 +9,14 @@
 	grid-template-rows: 64px 1fr 16px;
 	height: 100vh;
 
+	@media (max-width: 768px) {
+		grid-template-areas:
+			"header"
+			"list"
+			".";
+		grid-template-columns: 1fr;
+	}
+
 	.email-index__header {
 		align-items: center;
 		background-color: var(--mister-email-background);
@@ -22,6 +30,11 @@
 		display: flex;
 		flex: 238px 0 0;
 		padding-right: 30px;
+
+		
+		@media (max-width: 768px) {
+			display: none;
+		}
 
 		img {
 			height: auto;
@@ -38,5 +51,14 @@
 		background-color: white;
 		border-radius: 16px;
 		grid-area: list;
+	}
+
+	
+	&.menu-collapsed:not(.folders-hovered) {
+		grid-template-columns: 72px 1fr 56px;
+
+		@media (max-width: 768px) {
+			grid-template-columns: 1fr;
+		}
 	}
 }

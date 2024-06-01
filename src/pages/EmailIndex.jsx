@@ -6,6 +6,7 @@ import { EmailList } from "../cmps/EmailList.jsx";
 import { EmailFilter } from "../cmps/EmailFilter.jsx";
 import { EmailFolderList } from "../cmps/EmailFolderList.jsx";
 import { NavLink } from "react-router-dom";
+import { EmailMenuButton } from "../cmps/EmailMenuButton.jsx";
 
 import imgUrl from '../assets/images/logo_gmail.png'
 
@@ -52,29 +53,40 @@ export function EmailIndex() {
         }
     }
 
-    function onFoldersHover( status ) {
-        setTimeout(setFoldersHovered( status === 'start' ? true : false ), 1000)
+    function onMenuBtnClick() {
+        console.log('menuBtnClicked')
+        setMenuCollapsed(prev => !prev)
+    }
+
+    function onFoldersHover(status) {
+        console.log('onFoldersHover', status)
+        setTimeout(setFoldersHovered(status === 'start' ? true : false), 1000)
+    }
+
+    function onFoldersClick() {
+        console.log('foldersClicked')
+        if (window.innerWidth <= 768) {
+            setMenuCollapsed(() => true)
+        }
     }
 
     if (!emails) return <div>Loading...</div>
     return (
-        <section className={`email-index ${menuCollapsed ? 'menu-collapsed' : ''} ${foldersHovered ? 'folders-hovered' : ''}`}>
+        <section className={`email-index ${menuCollapsed ? 'menu-collapsed' : ''} ${foldersHovered ? 'folders-hovered' : ''} `}>
             <header className="email-index__header">
                 <div className="email-index__menu-logo">
-                    <button className="email-index__menu simple-button" aria-expanded="false" aria-label="Main menu" role="button" onClick={() => setMenuCollapsed(!menuCollapsed)}>
-                        <svg focusable="false" viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"></path></svg>
-                    </button>
+                    <EmailMenuButton onMenuBtnClick={onMenuBtnClick} />
                     <NavLink className="email-index__logo" to="/">
                         <img src={imgUrl} width="109" height="40" alt="gmail logo" />
                     </NavLink>
                 </div>
-                <EmailFilter />
+                <EmailFilter onMenuBtnClick={onMenuBtnClick} />
             </header>
 
-            <EmailFolderList onFoldersHover={onFoldersHover}/>
+            <EmailFolderList onFoldersHover={onFoldersHover} onFoldersClick={onFoldersClick} />
 
             <section className="email-index__list">
-                <EmailList emails={emails} onRemoveMail={onRemoveMail} onStarClick={onStarClick}/>
+                <EmailList emails={emails} onRemoveMail={onRemoveMail} onStarClick={onStarClick} />
             </section>
         </section>
     )

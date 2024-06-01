@@ -1,10 +1,28 @@
 .email-folder-list {
-	display: grid;
-	grid-area: menu;
-	grid-template-columns: 1fr;
-	grid-auto-rows: 32px;
-	width: 240px;
-	overflow-y: auto;
+	background-color: transparent;
+
+	@media (max-width: 768px) {
+		background: rgba(0, 0, 0, 0.4);
+		grid-area: none;
+		height: 100%;
+		position: fixed;
+		width: 100%;
+		z-index: 5;
+	}
+
+	.email-folder-list__inner {
+		display: grid;
+		grid-area: menu;
+		grid-template-columns: 1fr;
+		grid-auto-rows: 32px;
+		width: 240px;
+		overflow-y: auto;
+
+		@media (max-width: 768px) {
+			background-color: var(--mister-email-background);
+			height: 100%;
+		}
+	}
 
 	.email-folder-list__item {
 		align-items: center;
@@ -96,26 +114,44 @@
 	}
 }
 
-.email-index.menu-collapsed:not(.folders-hovered) {
-	grid-template-columns: 72px 1fr 56px;
+.email-index.menu-collapsed {
+	/* Desktop behaviour */
+	&:not(.folders-hovered) {
+		@media (min-width: 769px) {
+			.email-folder-list {
+				@media (max-width: 768px) {
+					display: none;
+					grid-area: none;
+				}
+			}
 
-	.email-folder-list__item-text {
-		display: none;
+			.email-folder-list__item-text {
+				display: none;
+			}
+
+			.email-folder-list__item:hover::before {
+				border-radius: 16px;
+				height: 32px;
+				margin-inline-start: 20px;
+				position: absolute;
+				width: 32px;
+			}
+
+			.email-folder-list__item.active::before {
+				border-radius: 16px;
+				height: 32px;
+				margin-inline-start: 20px;
+				position: absolute;
+				width: 32px;
+			}
+		}
 	}
 
-	.email-folder-list__item:hover::before {
-		border-radius: 16px;
-		height: 32px;
-		margin-inline-start: 20px;
-		position: absolute;
-		width: 32px;
-	}
-
-	.email-folder-list__item.active::before {
-		border-radius: 16px;
-		height: 32px;
-		margin-inline-start: 20px;
-		position: absolute;
-		width: 32px;
+	/* Mobile behaviour */
+	.email-folder-list {
+		@media (max-width: 768px) {
+			display: none;
+			grid-area: none;
+		}
 	}
 }

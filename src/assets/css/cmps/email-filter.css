@@ -25,7 +25,19 @@
 	.email-filter__search-btn {
 		background-color: transparent;
 		border: none;
+
+		@media (max-width: 768px) {
+			display: none;
+		}
 	}
+
+	.email-filter__menu-btn {
+		display: none;
+
+		@media (max-width: 768px) {
+			display: block;
+		}
+	}	
 
 	.email-filter__search {
 		background-color: transparent;
