@@ -1,12 +1,56 @@
-.home {
-    text-align: center;
-}
+.home-page {
+    display: grid;
+    gap: 20px;
+    height: 100vh;
+    grid-template-areas:
+        ". logo text-header text-header ."
+        ". logo text-content text-content ."
+        ". . enter about .";
 
-.home h1 {
-    font-size: 40px;
-    margin: 10px;
-}
+    grid-template-columns: 1fr 100px 100px 1fr 1fr;
+    place-content: center;
 
-.home img {
-    width: 500px;
+    h1 {
+        font-size: 40px;
+    }
+
+    .button {
+        background-color: #348eff;
+        border: none;
+        border-radius: 5px;
+        box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+        cursor: pointer;
+        display: grid;
+        line-height: 1;
+        padding: 10px;
+        place-content: center;
+        text-transform: uppercase;
+        transition: all 0.3s ease;
+        width: 100px;
+
+        &:hover {
+            background-color: #78bfff;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+        }
+    }
+
+    .home__logo {
+        grid-area: logo;
+    }
+
+    .home__text-header {
+        grid-area: text-header;
+    }
+
+    .home__text-content {
+        grid-area: text-content;
+    }
+
+    .home__enter {
+        grid-area: enter;
+    }
+
+    .home__about {
+        grid-area: about;
+    }
 }
