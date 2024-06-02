@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { utilService } from "../services/util.service";
 
-export function EmailPreview({ email, onStarClick }) {
+export function EmailPreview({ email, onStarClick, onRemoveMail }) {
     const [isHovered, setIsHovered] = useState(false);
     const [isSelected, setIsSelected] = useState(false);
 
@@ -14,6 +14,11 @@ export function EmailPreview({ email, onStarClick }) {
     function onStarClickPreview(event) {
         event.preventDefault();
         onStarClick(email.id);
+    }
+
+    function onRemoveMailPreview(event, emailId) {
+        event.preventDefault();
+        onRemoveMail(emailId);
     }
 
     return (
@@ -31,7 +36,7 @@ export function EmailPreview({ email, onStarClick }) {
                 <div className="email-preview__date">{utilService.displayDate(email.sentAt)}</div>
                 <div className="email-preview__actions">
                     <button className="email-preview__action archive" onClick={() => console.log('archive button clicked')}></button>
-                    <button className="email-preview__action delete" onClick={() => console.log('delete button clicked')}></button>
+                    <button className="email-preview__action delete" onClick={(event) => onRemoveMailPreview(event, email.id)}></button>
                     <button className="email-preview__action unread" onClick={() => console.log('unread button clicked')}></button>
                     <button className="email-preview__action snooze" onClick={() => console.log('snooze button clicked')}></button>
                 </div>
