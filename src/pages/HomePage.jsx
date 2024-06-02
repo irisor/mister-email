@@ -15,11 +15,11 @@ export function HomePage() {
 				<h3>To avoid having you wait forever,</h3>
 				<h3>you’re welcome to engage!</h3>
 			</div>
-			<div className="home__enter button">
-				<NavLink to='/mail/inbox'>Enter</NavLink>
+			<div className="home__enter">
+				<NavLink className="button" to='/mail/inbox'>Enter</NavLink>
 			</div>
-			<div className='home__about button'>
-				<NavLink to='/about'>About</NavLink>
+			<div className='home__about'>
+				<NavLink className="button" to='/about'>About</NavLink>
 			</div>
 		</section>
 	);
