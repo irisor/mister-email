@@ -3,12 +3,15 @@ import { utilService } from './util.service.js'
 
 export const emailService = {
     query,
+    isInFilter,
     save,
     remove,
     getById,
     createEmail,
     getDefaultFilter,
     toggleStar,
+    toggleRead,
+    changeStatus,
 }
 
 const loggedinUser = {
@@ -24,14 +27,18 @@ _createMails()
 async function query(filterBy) {
     let emails = await storageService.query(STORAGE_KEY)
     if (filterBy) {
-        let { status, readStatus, isStarred, text } = filterBy
-        emails = emails.filter(email => 
-            (status === 'All' || email.status === status) && 
-            (readStatus === 'All' || email.isRead && readStatus === 'Read' || !email.isRead && readStatus === 'Unread') && 
-            (!isStarred || email.isStarred) &&
-            (!text || email.text.includes(text))
+        emails = emails.filter(email => isInFilter(email, filterBy) 
     )}
     return emails
+}
+
+function isInFilter(email, filterBy) {
+    if (!filterBy) return true
+    const { status, readStatus, isStarred, text } = filterBy
+    return (status === 'All' || email.status === status) && 
+        (readStatus === 'All' || email.isRead && readStatus === 'Read' || !email.isRead && readStatus === 'Unread') && 
+        (!isStarred || email.isStarred) &&
+        (!text || email.text.includes(text))
 }
 
 function getById(id) {
@@ -71,6 +78,18 @@ function getDefaultFilter({ folder='inbox', readStatus="All", isStarred=false, t
 async function toggleStar(emailId) {
     const email = await getById(emailId)
     email.isStarred = !email.isStarred
+    save(email)
+}
+
+async function toggleRead(emailId) {
+    const email = await getById(emailId)
+    email.isRead = !email.isRead
+    save(email)
+}
+
+async function changeStatus(emailId, newStatus) {
+    const email = await getById(emailId)
+    email.status = newStatus
     save(email)
 }
 

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { utilService } from "../services/util.service";
 
-export function EmailPreview({ email, onStarClick, onRemoveMail }) {
+export function EmailPreview({ email, onStarClick, onRemoveMail, onToggleRead, onChangeStatus }) {
     const [isHovered, setIsHovered] = useState(false);
     const [isSelected, setIsSelected] = useState(false);
 
@@ -16,10 +16,20 @@ export function EmailPreview({ email, onStarClick, onRemoveMail }) {
         onStarClick(email.id);
     }
 
-    function onRemoveMailPreview(event, emailId) {
+    function onRemoveMailPreview(event) {
         event.preventDefault();
-        onRemoveMail(emailId);
+        onRemoveMail(email.id);
     }
+
+    function onToggleReadPreview(event) {
+        event.preventDefault();
+        onToggleRead(email.id);
+    }
+
+    function onChangeStatusPreview(event, newStatus) {
+        event.preventDefault();
+        onChangeStatus(email.id, newStatus);
+    }   
 
     return (
         <article className={`email-preview ${email.isRead ? 'read' : ''} ${isSelected ? 'selected' : ''} ${isHovered ? 'hovered' : ''} `} id={email.id} key={email.id} onMouseOver={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)} >
@@ -35,10 +45,9 @@ export function EmailPreview({ email, onStarClick, onRemoveMail }) {
                 </div>
                 <div className="email-preview__date">{utilService.displayDate(email.sentAt)}</div>
                 <div className="email-preview__actions">
-                    <button className="email-preview__action archive" onClick={() => console.log('archive button clicked')}></button>
-                    <button className="email-preview__action delete" onClick={(event) => onRemoveMailPreview(event, email.id)}></button>
-                    <button className="email-preview__action unread" onClick={() => console.log('unread button clicked')}></button>
-                    <button className="email-preview__action snooze" onClick={() => console.log('snooze button clicked')}></button>
+                    <button className="email-preview__action archive" onClick={(event) => onChangeStatusPreview(event, 'archive')}></button>
+                    <button className="email-preview__action delete" onClick={(event) => onRemoveMailPreview(event)}></button>
+                    <button className="email-preview__action unread" onClick={(event) => onToggleReadPreview(event)}></button>
                 </div>
             </Link>
         </article>

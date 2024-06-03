@@ -47,9 +47,33 @@ export function EmailIndex() {
             setEmails(prevMails => prevMails.map(mail => {
                 if (mail.id === emailId) mail.isStarred = !mail.isStarred
                 return mail
-            }))
+            }).filter(email => email.id !== emailId || emailService.isInFilter(email, emailService.getDefaultFilter({ folder }))))
         } catch (error) {
             console.log('Having issues starring e-mail:', error)
+        }
+    }
+
+    async function onToggleRead(emailId) {
+        try {
+            await emailService.toggleRead(emailId)
+            setEmails(prevMails => prevMails.map(mail => {
+                if (mail.id === emailId) mail.isRead = !mail.isRead
+                return mail
+            }).filter(email => email.id !== emailId || emailService.isInFilter(email, emailService.getDefaultFilter({ folder }))))
+        } catch (error) {
+            console.log('Having issues toggling read status of e-mail:', error)
+        }
+    }
+
+    async function onChangeStatus(emailId, newStatus) {
+        try {
+            await emailService.changeStatus(emailId, newStatus)
+            setEmails(prevMails => prevMails.map(mail => {
+                if (mail.id === emailId) mail.status = newStatus
+                return mail
+            }).filter(email => email.id !== emailId || emailService.isInFilter(email, emailService.getDefaultFilter({ folder }))))
+        } catch (error) {
+            console.log('Having issues changing status of e-mail:', error)
         }
     }
 
@@ -86,7 +110,7 @@ export function EmailIndex() {
             <EmailFolderList onFoldersHover={onFoldersHover} onFoldersClick={onFoldersClick} />
 
             <section className="email-index__list">
-                <EmailList emails={emails} onRemoveMail={onRemoveMail} onStarClick={onStarClick} />
+                <EmailList emails={emails} onRemoveMail={onRemoveMail} onStarClick={onStarClick} onToggleRead={onToggleRead} onChangeStatus={onChangeStatus} />
             </section>
         </section>
     )
