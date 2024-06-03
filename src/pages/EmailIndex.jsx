@@ -15,20 +15,41 @@ export function EmailIndex() {
     const [emails, setEmails] = useState(null)
     const [menuCollapsed, setMenuCollapsed] = useState(false)
     const [foldersHovered, setFoldersHovered] = useState(false)
-
-    const folder = useParams().folder
+    const { folder } = useParams()
+    const [filterBy, setFilterBy] = useState(emailService.getDefaultFilter({ folder }))
 
     useEffect(() => {
-        loadMails(folder)
+        const newFilterBy = emailService.getDefaultFilter({ folder });
+        setFilterBy(newFilterBy);
+        loadMails(newFilterBy)
     }, [folder])
 
-    async function loadMails(folder) {
+    useEffect(() => {
+        debouncedLoadMails(filterBy)
+    }, [filterBy])
+
+    function debounce(func, wait) {
+        let timeout;
+        return function executedFunction(...args) {
+            const later = () => {
+                clearTimeout(timeout)
+                func(...args)
+            }
+            clearTimeout(timeout)
+            timeout = setTimeout(later, wait)
+        }
+    }
+
+    const debouncedLoadMails = debounce((filterBy) => {
+        loadMails(filterBy)
+    }, 300)
+
+    async function loadMails(filterBy) {
         try {
-            const filterBy = emailService.getDefaultFilter({ folder })
-            const emails = await emailService.query(filterBy)
-            setEmails(emails)
+            const emails = await emailService.query(filterBy);
+            setEmails(emails);
         } catch (error) {
-            console.log('Having issues with loading e-mails:', error)
+            console.log('Having issues with loading e-mails:', error);
         }
     }
 
@@ -47,7 +68,7 @@ export function EmailIndex() {
             setEmails(prevMails => prevMails.map(mail => {
                 if (mail.id === emailId) mail.isStarred = !mail.isStarred
                 return mail
-            }).filter(email => email.id !== emailId || emailService.isInFilter(email, emailService.getDefaultFilter({ folder }))))
+            }).filter(email => email.id !== emailId || emailService.isInFilter(email, filterBy)))
         } catch (error) {
             console.log('Having issues starring e-mail:', error)
         }
@@ -59,7 +80,7 @@ export function EmailIndex() {
             setEmails(prevMails => prevMails.map(mail => {
                 if (mail.id === emailId) mail.isRead = !mail.isRead
                 return mail
-            }).filter(email => email.id !== emailId || emailService.isInFilter(email, emailService.getDefaultFilter({ folder }))))
+            }).filter(email => email.id !== emailId || emailService.isInFilter(email, filterBy)))
         } catch (error) {
             console.log('Having issues toggling read status of e-mail:', error)
         }
@@ -71,27 +92,29 @@ export function EmailIndex() {
             setEmails(prevMails => prevMails.map(mail => {
                 if (mail.id === emailId) mail.status = newStatus
                 return mail
-            }).filter(email => email.id !== emailId || emailService.isInFilter(email, emailService.getDefaultFilter({ folder }))))
+            }).filter(email => email.id !== emailId || emailService.isInFilter(email, filterBy)))
         } catch (error) {
             console.log('Having issues changing status of e-mail:', error)
         }
     }
 
     function onMenuBtnClick() {
-        console.log('menuBtnClicked')
         setMenuCollapsed(prev => !prev)
     }
 
     function onFoldersHover(status) {
-        console.log('onFoldersHover', status)
         setTimeout(setFoldersHovered(status === 'start' ? true : false), 1000)
     }
 
     function onFoldersClick() {
-        console.log('foldersClicked')
         if (window.innerWidth <= 768) {
             setMenuCollapsed(() => true)
         }
+    }
+
+
+    function onSetFilterBy(filterBy) {
+        setFilterBy(prevFilter => ({ ...prevFilter, ...filterBy }))
     }
 
     if (!emails) return <div>Loading...</div>
@@ -104,7 +127,7 @@ export function EmailIndex() {
                         <img src={imgUrl} width="109" height="40" alt="gmail logo" />
                     </NavLink>
                 </div>
-                <EmailFilter onMenuBtnClick={onMenuBtnClick} />
+                <EmailFilter onMenuBtnClick={onMenuBtnClick} onSetFilterBy={onSetFilterBy} filterBy={filterBy} />
             </header>
 
             <EmailFolderList onFoldersHover={onFoldersHover} onFoldersClick={onFoldersClick} />

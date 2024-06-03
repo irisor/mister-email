@@ -1,7 +1,7 @@
 import { EmailMenuButton } from "./EmailMenuButton";
 
 // export function EmailFilter({ filterBy, onSetFilter }) {
-export function EmailFilter({ onMenuBtnClick}) {
+export function EmailFilter({ onMenuBtnClick, filterBy, onSetFilterBy }) {
 	return (
 		<section className="email-filter">
 			<form className="email-filter__search-form">
@@ -15,14 +15,14 @@ export function EmailFilter({ onMenuBtnClick}) {
 					type="text"
 					className="email-filter__search"
 					placeholder="Search mail"
-				// value={filterBy.text}
-				// onChange={(ev) => onSetFilter({ text: ev.target.value })}
+					value={filterBy.text || ''}
+					onChange={(event) => onSetFilterBy({ text: event.target.value })}
 				/>
 			</form>
 			<select
 				className="email-filter__read-status"
-			// value={filterBy.readStatus}
-			// onChange={(ev) => onSetFilter({ readStatus: ev.target.value })}
+				value={filterBy.readStatus}
+				onChange={(ev) => onSetFilterBy({ readStatus: ev.target.value })}
 			>
 				<option value="All">All</option>
 				<option value="Read">Read</option>

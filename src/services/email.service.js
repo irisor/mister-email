@@ -38,7 +38,7 @@ function isInFilter(email, filterBy) {
     return (status === 'All' || email.status === status) && 
         (readStatus === 'All' || email.isRead && readStatus === 'Read' || !email.isRead && readStatus === 'Unread') && 
         (!isStarred || email.isStarred) &&
-        (!text || email.text.includes(text))
+        (!text || email.subject.toLowerCase().includes(text.toLowerCase()) || email.body.toLowerCase().includes(text.toLowerCase()))
 }
 
 function getById(id) {
