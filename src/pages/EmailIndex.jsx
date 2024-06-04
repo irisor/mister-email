@@ -142,7 +142,7 @@ export function EmailIndex() {
             </header>
 
             <EmailFolderList onFoldersHover={onFoldersHover} onFoldersClick={onFoldersClick} />
-{console.log(emailId, folder)}
+
             { emailId ? <Outlet />: 
                 <EmailList emails={emails} onRemoveMail={onRemoveMail} onStarClick={onStarClick} onToggleRead={onToggleRead} onSetIsRead={onSetIsRead} onChangeStatus={onChangeStatus} />
             }
