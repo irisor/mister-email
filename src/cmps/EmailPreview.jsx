@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { utilService } from "../services/util.service";
 
-export function EmailPreview({ email, onStarClick, onRemoveMail, onToggleRead, onChangeStatus }) {
+export function EmailPreview({ email, onStarClick, onRemoveMail, onToggleRead, onChangeStatus, onSetIsRead }) {
     const [isHovered, setIsHovered] = useState(false);
     const [isSelected, setIsSelected] = useState(false);
 
@@ -26,6 +26,8 @@ export function EmailPreview({ email, onStarClick, onRemoveMail, onToggleRead, o
         onToggleRead(email.id);
     }
 
+
+
     function onChangeStatusPreview(event, newStatus) {
         event.preventDefault();
         onChangeStatus(email.id, newStatus);
@@ -33,7 +35,7 @@ export function EmailPreview({ email, onStarClick, onRemoveMail, onToggleRead, o
 
     return (
         <article className={`email-preview ${email.isRead ? 'read' : ''} ${isSelected ? 'selected' : ''} ${isHovered ? 'hovered' : ''} `} id={email.id} key={email.id} onMouseOver={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)} >
-            <Link className="email-preview__link" to={`/email/${email.id}`}>
+            <Link className="email-preview__link" to={`/mail/${email.status}/${email.id}`} onClick={()=>onSetIsRead(email.id)}>
                 <button className={`email-preview__checkbox`} onClick={(event) => onChecked(event)}></button>
                 <button className={`email-preview__star ${email.isStarred ? 'starred' : ''}`} onClick={(event) => onStarClickPreview(event)}></button>
                 <div className="email-preview__from">{email.fromFullname}</div>
@@ -43,7 +45,7 @@ export function EmailPreview({ email, onStarClick, onRemoveMail, onToggleRead, o
                         <span className="email-preview__dash">&nbsp;-&nbsp;</span>{email.body}
                     </span>
                 </div>
-                <div className="email-preview__date">{utilService.displayDate(email.sentAt)}</div>
+                <div className="email-preview__date">{utilService.displayShortDate(email.sentAt)}</div>
                 <div className="email-preview__actions">
                     <button className="email-preview__action archive" onClick={(event) => onChangeStatusPreview(event, 'archive')}></button>
                     <button className="email-preview__action delete" onClick={(event) => onRemoveMailPreview(event)}></button>

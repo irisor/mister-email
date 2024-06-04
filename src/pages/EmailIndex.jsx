@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react"
-import { useParams } from "react-router"
+import { Outlet, useParams } from "react-router"
 import { emailService } from "../services/email.service.js"
 import { EmailList } from "../cmps/EmailList.jsx";
-// import { EmailHeader } from "../cmps/EmailHeader.jsx";
 import { EmailFilter } from "../cmps/EmailFilter.jsx";
 import { EmailFolderList } from "../cmps/EmailFolderList.jsx";
 import { NavLink } from "react-router-dom";
@@ -15,7 +14,7 @@ export function EmailIndex() {
     const [emails, setEmails] = useState(null)
     const [menuCollapsed, setMenuCollapsed] = useState(false)
     const [foldersHovered, setFoldersHovered] = useState(false)
-    const { folder } = useParams()
+    const {folder, emailId } = useParams()
     const [filterBy, setFilterBy] = useState(emailService.getDefaultFilter({ folder }))
 
     useEffect(() => {
@@ -86,6 +85,18 @@ export function EmailIndex() {
         }
     }
 
+    async function onSetIsRead(emailId) {
+        try {
+            await emailService.setIsRead(emailId)
+            setEmails(prevMails => prevMails.map(mail => {
+                if (mail.id === emailId) mail.isRead = true
+                return mail
+            }).filter(email => email.id !== emailId || emailService.isInFilter(email, filterBy)))
+        } catch (error) {
+            console.log('Having issues setting read status of e-mail:', error)
+        }
+    }
+
     async function onChangeStatus(emailId, newStatus) {
         try {
             await emailService.changeStatus(emailId, newStatus)
@@ -131,10 +142,10 @@ export function EmailIndex() {
             </header>
 
             <EmailFolderList onFoldersHover={onFoldersHover} onFoldersClick={onFoldersClick} />
-
-            <section className="email-index__list">
-                <EmailList emails={emails} onRemoveMail={onRemoveMail} onStarClick={onStarClick} onToggleRead={onToggleRead} onChangeStatus={onChangeStatus} />
-            </section>
+{console.log(emailId, folder)}
+            { emailId ? <Outlet />: 
+                <EmailList emails={emails} onRemoveMail={onRemoveMail} onStarClick={onStarClick} onToggleRead={onToggleRead} onSetIsRead={onSetIsRead} onChangeStatus={onChangeStatus} />
+            }
         </section>
     )
 }

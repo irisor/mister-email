@@ -2,6 +2,7 @@ import { storageService } from './async-storage.service.js'
 import { utilService } from './util.service.js'
 
 export const emailService = {
+    isLoggedinUser,
     query,
     isInFilter,
     save,
@@ -11,12 +12,17 @@ export const emailService = {
     getDefaultFilter,
     toggleStar,
     toggleRead,
+    setIsRead,
     changeStatus,
 }
 
 const loggedinUser = {
     email: 'user@appsus.com',
     fullname: 'Mahatma Appsus'
+}
+
+function isLoggedinUser(email) {
+    return email === loggedinUser.email
 }
 
 
@@ -87,6 +93,12 @@ async function toggleRead(emailId) {
     save(email)
 }
 
+async function setIsRead(emailId) {
+    const email = await getById(emailId)
+    email.isRead = true
+    save(email)
+}
+
 async function changeStatus(emailId, newStatus) {
     const email = await getById(emailId)
     email.status = newStatus
@@ -98,11 +110,11 @@ function _createMails() {
     if (!emails || !emails.length) {
         emails = [
 
-            { id: 'e101', fromEmail: 'alice@example.com', fromFullname: 'Alice Smith', toEmail: 'bob@example.com', toFullname: 'Bob Johnson', subject: 'Meet for lunch', sentAt: new Date('2024-01-01T00:00:00'), isStarred: false, status: 'inbox', body: 'Please join me for lunch today', isRead: true, removedAt: null },
+            { id: 'e101', fromEmail: 'alice@example.com', fromFullname: 'Alice Smith', toEmail: 'bob@example.com', toFullname: 'Bob Johnson', subject: 'Meet for lunch', sentAt: new Date('2024-06-06T00:00:00'), isStarred: false, status: 'inbox', body: 'Please join me for lunch today', isRead: true, removedAt: null },
             { id: 'e102', fromEmail: 'bob@example.com', fromFullname: 'Bob Johnson', toEmail: 'alice@example.com', toFullname: 'Alice Smith', subject: 'Re: Meet for lunch', sentAt: new Date('2024-01-02T00:00:00'), isStarred: true, status: 'inbox', body: 'Sure, see you at 2pm', isRead: false, removedAt: null },
             { id: 'e103', fromEmail: 'charlie@example.com', fromFullname: 'Charlie Brown', toEmail: 'dave@example.com', toFullname: 'Dave Smith', subject: 'Promotion', sentAt: new Date('2024-05-28T05:17:22'), isStarred: false, status: 'inbox', body: 'Congratulations on your promotion', isRead: false, removedAt: null },
             { id: 'e104', fromEmail: 'dave@example.com', fromFullname: 'Dave Smith', toEmail: 'charlie@example.com', toFullname: 'Charlie Brown', subject: 'Meet for dinner', sentAt: new Date('2024-05-28T18:05:03'), isStarred: false, status: 'draft', body: 'I have a table reserved at 7pm', isRead: true, removedAt: null },
-            { id: 'e105', fromEmail: 'eve@example.com', fromFullname: 'Eve Evans', toEmail: 'frank@example.com', toFullname: 'Frank Johnson', subject: 'Social', sentAt: new Date('2021-01-05T00:00:00'), isStarred: false, status: 'sent', body: 'Let\'s meet for cocktails at 9pm', isRead: true, removedAt: null },
+            { id: 'e105', fromEmail: 'eve@example.com', fromFullname: 'Eve Evans', toEmail: 'user@appsus.com', toFullname: 'Frank Johnson', subject: 'Social', sentAt: new Date('2021-01-05T00:00:00'), isStarred: false, status: 'sent', body: 'Let\'s meet for cocktails at 9pm', isRead: true, removedAt: null },
             { id: 'e106', fromEmail: 'frank@example.com', fromFullname: 'Frank Johnson', toEmail: 'eve@example.com', toFullname: 'Eve Evans', subject: 'Promotion', sentAt: new Date('2021-01-06T00:00:00'), isStarred: false, status: 'trash', body: 'Congratulations on your promotion', isRead: false, removedAt: null },
             { id: 'e107', fromEmail: 'george@example.com', fromFullname: 'George Smith', toEmail: 'harry@example.com', toFullname: 'Harry Johnson', subject: 'Meet for lunch', sentAt: new Date('2021-01-07T00:00:00'), isStarred: false, status: 'inbox', body: 'Please join me for lunch today', isRead: false, removedAt: null },
             { id: 'e108', fromEmail: 'harry@example.com', fromFullname: 'Harry Johnson', toEmail: 'george@example.com', toFullname: 'George Smith', subject: 'Social', sentAt: new Date('2021-01-08'), isStarred: true, status: 'inbox', body: 'Let\'s grab drinks tonight', isRead: true, removedAt: null },
