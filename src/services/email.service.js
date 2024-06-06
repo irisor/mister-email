@@ -10,10 +10,6 @@ export const emailService = {
     getById,
     createEmail,
     getDefaultFilter,
-    toggleStar,
-    toggleRead,
-    setIsRead,
-    changeStatus,
 }
 
 const loggedinUser = {
@@ -41,9 +37,10 @@ async function query(filterBy) {
 function isInFilter(email, filterBy) {
     if (!filterBy) return true
     const { status, readStatus, isStarred, text } = filterBy
+   
     return (status === 'All' || email.status === status) && 
         (readStatus === 'All' || email.isRead && readStatus === 'Read' || !email.isRead && readStatus === 'Unread') && 
-        (!isStarred || email.isStarred) &&
+        (!isStarred || (email.isStarred && email.status !== 'trash')) &&
         (!text || email.subject.toLowerCase().includes(text.toLowerCase()) || email.body.toLowerCase().includes(text.toLowerCase()))
 }
 
@@ -79,30 +76,6 @@ function getDefaultFilter({ folder='inbox', readStatus="All", isStarred=false, t
        isStarred: isStarred || folder === 'starred' ? true : false,
        text
     }
-}
-
-async function toggleStar(emailId) {
-    const email = await getById(emailId)
-    email.isStarred = !email.isStarred
-    save(email)
-}
-
-async function toggleRead(emailId) {
-    const email = await getById(emailId)
-    email.isRead = !email.isRead
-    save(email)
-}
-
-async function setIsRead(emailId) {
-    const email = await getById(emailId)
-    email.isRead = true
-    save(email)
-}
-
-async function changeStatus(emailId, newStatus) {
-    const email = await getById(emailId)
-    email.status = newStatus
-    save(email)
 }
 
 function _createMails() {

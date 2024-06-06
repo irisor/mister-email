@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { utilService } from "../services/util.service";
 
-export function EmailPreview({ email, onStarClick, onRemoveMail, onToggleRead, onChangeStatus, onSetIsRead }) {
+export function EmailPreview({ email, onUpdateEmail }) {
     const [isHovered, setIsHovered] = useState(false);
     const [isSelected, setIsSelected] = useState(false);
 
@@ -12,30 +12,37 @@ export function EmailPreview({ email, onStarClick, onRemoveMail, onToggleRead, o
     }
 
     function onStarClickPreview(event) {
-        event.preventDefault();
-        onStarClick(email.id);
+        event.preventDefault()
+        event.stopPropagation()
+        onUpdateEmail({...email, isStarred: !email.isStarred})
     }
 
     function onRemoveMailPreview(event) {
         event.preventDefault();
-        onRemoveMail(email.id);
+        event.stopPropagation();
+        onUpdateEmail({...email, status: 'trash'})
     }
 
     function onToggleReadPreview(event) {
         event.preventDefault();
-        onToggleRead(email.id);
+        event.stopPropagation();
+        onUpdateEmail({...email, isRead: !email.isRead})
     }
-
-
 
     function onChangeStatusPreview(event, newStatus) {
         event.preventDefault();
-        onChangeStatus(email.id, newStatus);
-    }   
+        event.stopPropagation();
+        onUpdateEmail({...email, status: newStatus})
+    }
+
+    function onSetIsReadPreview() {
+        onUpdateEmail({...email, isRead: true})
+    }
+
 
     return (
         <article className={`email-preview ${email.isRead ? 'read' : ''} ${isSelected ? 'selected' : ''} ${isHovered ? 'hovered' : ''} `} id={email.id} key={email.id} onMouseOver={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)} >
-            <Link className="email-preview__link" to={`/mail/${email.status}/${email.id}`} onClick={()=>onSetIsRead(email.id)}>
+            <Link className="email-preview__link" to={`/mail/${email.status}/${email.id}`} onClick={(event)=>onSetIsReadPreview(event)}>
                 <button className={`email-preview__checkbox`} onClick={(event) => onChecked(event)}></button>
                 <button className={`email-preview__star ${email.isStarred ? 'starred' : ''}`} onClick={(event) => onStarClickPreview(event)}></button>
                 <div className="email-preview__from">{email.fromFullname}</div>

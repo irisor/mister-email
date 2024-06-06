@@ -14,7 +14,7 @@ export function EmailIndex() {
     const [emails, setEmails] = useState(null)
     const [menuCollapsed, setMenuCollapsed] = useState(false)
     const [foldersHovered, setFoldersHovered] = useState(false)
-    const { folder, emailId } = useParams()
+    const {folder, emailId} = useParams()
     const [filterBy, setFilterBy] = useState(emailService.getDefaultFilter({ folder }))
 
     useEffect(() => {
@@ -22,26 +22,6 @@ export function EmailIndex() {
         setFilterBy(newFilterBy);
         loadMails(newFilterBy)
     }, [folder])
-
-    useEffect(() => {
-        debouncedLoadMails(filterBy)
-    }, [filterBy])
-
-    function debounce(func, wait) {
-        let timeout;
-        return function executedFunction(...args) {
-            const later = () => {
-                clearTimeout(timeout)
-                func(...args)
-            }
-            clearTimeout(timeout)
-            timeout = setTimeout(later, wait)
-        }
-    }
-
-    const debouncedLoadMails = debounce((filterBy) => {
-        loadMails(filterBy)
-    }, 300)
 
     async function loadMails(filterBy) {
         try {
@@ -52,60 +32,19 @@ export function EmailIndex() {
         }
     }
 
-    async function onRemoveMail(emailId) {
+    async function onUpdateEmail(newEmail) {
         try {
-            await emailService.remove(emailId)
-            setEmails(prevMails => prevMails.filter(mail => mail.id !== emailId))
-        } catch (error) {
-            console.log('Having issues removing e-mail:', error)
-        }
-    }
+            await emailService.save(newEmail)
+            let newEmails = emails.map(email => email.id === newEmail.id ? newEmail : email)
 
-    async function onStarClick(emailId) {
-        try {
-            await emailService.toggleStar(emailId)
-            setEmails(prevMails => prevMails.map(mail => {
-                if (mail.id === emailId) mail.isStarred = !mail.isStarred
-                return mail
-            }).filter(email => email.id !== emailId || emailService.isInFilter(email, filterBy)))
-        } catch (error) {
-            console.log('Having issues starring e-mail:', error)
-        }
-    }
+            // If the update was involved removing an email, remove it from the list
+            if (newEmail.status === 'trash') {
+                newEmails = newEmails.filter(email => email.id !== newEmail.id || emailService.isInFilter(email, filterBy))
+            }
+            setEmails(() => newEmails)
 
-    async function onToggleRead(emailId) {
-        try {
-            await emailService.toggleRead(emailId)
-            setEmails(prevMails => prevMails.map(mail => {
-                if (mail.id === emailId) mail.isRead = !mail.isRead
-                return mail
-            }).filter(email => email.id !== emailId || emailService.isInFilter(email, filterBy)))
         } catch (error) {
-            console.log('Having issues toggling read status of e-mail:', error)
-        }
-    }
-
-    async function onSetIsRead(emailId) {
-        try {
-            await emailService.setIsRead(emailId)
-            setEmails(prevMails => prevMails.map(mail => {
-                if (mail.id === emailId) mail.isRead = true
-                return mail
-            }).filter(email => email.id !== emailId || emailService.isInFilter(email, filterBy)))
-        } catch (error) {
-            console.log('Having issues setting read status of e-mail:', error)
-        }
-    }
-
-    async function onChangeStatus(emailId, newStatus) {
-        try {
-            await emailService.changeStatus(emailId, newStatus)
-            setEmails(prevMails => prevMails.map(mail => {
-                if (mail.id === emailId) mail.status = newStatus
-                return mail
-            }).filter(email => email.id !== emailId || emailService.isInFilter(email, filterBy)))
-        } catch (error) {
-            console.log('Having issues changing status of e-mail:', error)
+            console.log('Having issues updating e-mail:', error)
         }
     }
 
@@ -145,7 +84,10 @@ export function EmailIndex() {
 
             <section className="email-index__content">
                 {emailId ? <Outlet /> :
-                    <EmailList emails={emails} onRemoveMail={onRemoveMail} onStarClick={onStarClick} onToggleRead={onToggleRead} onSetIsRead={onSetIsRead} onChangeStatus={onChangeStatus} />
+                    <EmailList 
+                        emails={emails} 
+                        onUpdateEmail={onUpdateEmail}
+                     />
                 }
             </section>
         </section>
