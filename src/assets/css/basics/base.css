@@ -5,6 +5,7 @@
     --mister-email-text-secondary: #5f6368;
     --mister-email-hover: rgba(32, 33, 36, 0.059);
     --mister-email-active: #d3e3fd;
+    --mister-email-details-text: #1f1f1f;
 }
 
 * {
@@ -12,7 +13,6 @@
 }
 
 html {
-    font-size: 0.875rem;
     scroll-behavior: smooth;
 }
 
@@ -21,6 +21,7 @@ body {
     margin: 0;
     min-height: 100vh;
     font-family: "Google Sans", Roboto, RobotoDraft, Helvetica, Arial, sans-serif;
+    font-size: 0.875rem;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
@@ -39,6 +40,12 @@ p {
     margin: 0;
     font-weight: normal;
     padding: 0;
+}
+
+h2 {
+    color: var(--mister-email-details-text) ;
+    font-size: 1.375rem;
+    font-weight: 400;
 }
 
 a {
@@ -67,24 +74,42 @@ option {
     font-size: inherit;
 }
 
-/* MAC like scrollbar */
-::-webkit-scrollbar {
-    width: 8px;
-    background-color: rgba(0, 0, 0, 0);
-    -webkit-border-radius: 100px;
-}
+.back {
+    background-image: url(../../images/icons/back.png);
+    background-position: center;
+	background-repeat: no-repeat;
+	background-size: 20px;
+	border-width: 0;
+    display: block;
+	height: 20px;
+	position: relative;
+	width: 20px;
 
-::-webkit-scrollbar:hover {
-    background-color: rgba(0, 0, 0, 0.09);
-}
+	&:before {
+		content: "";
+		display: block;
+		opacity: 0;
+		position: absolute;
+		transition-duration: 0.15s;
+		transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+		background: none;
+		border-radius: 50%;
+		box-sizing: border-box;
+		transform: scale(0);
+		transition-property: transform, opacity;
+		bottom: -10px;
+		left: -10px;
+		right: -10px;
+		top: -10px;
+	}
 
-::-webkit-scrollbar-thumb:vertical {
-    background: rgba(0, 0, 0, 0.5);
-    -webkit-border-radius: 100px;
-}
-
-::-webkit-scrollbar-thumb:vertical:active {
-    -webkit-border-radius: 100px;
+	&:hover::before {
+		background-color: rgba(32, 33, 36, 0.059);
+		border: none;
+		box-shadow: none;
+		opacity: 1;
+		transform: scale(1);
+	}
 }
 
 .main-app {

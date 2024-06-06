@@ -40,7 +40,6 @@ function displayShortDate(date) {
 
 function displayFullDate(date) {
     if (typeof date !== 'object') return;
-    // return new Intl.DateTimeFormat([], { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false }).format(date);
 
     const options = { year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric' };
     let formattedDate = date.toLocaleDateString(undefined, options);

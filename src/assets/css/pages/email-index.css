@@ -47,7 +47,7 @@
 		padding: 12px;
 	}
 
-	.email-index__list {
+	.email-index__content {
 		background-color: white;
 		border-radius: 16px;
 		grid-area: list;

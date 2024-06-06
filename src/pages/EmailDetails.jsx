@@ -20,12 +20,19 @@ export function EmailDetails() {
     if (!email) return <div>Loading...</div>
     return (
         <section className="email-details">
-            <Link to={`/mail/${email.status}`}>Back</Link>
-            <h2 className="email-subject">{email.subject}</h2>
-			<p className="email-from">{email.fromEmail}</p>
-			<p className="email-to">to {emailService.isLoggedinUser(email.toEmail) ? 'me' : email.toEmail}</p>
-			<p className="email-to">{utilService.displayFullDate(email.sentAt)}</p>
-			<p className="email-body">{email.body}</p>
+            <section className="email-header">
+                <Link className="back" to={`/mail/${email.status}`}></Link>
+            </section>
+            <section className="email-content">
+                <div className="email-subject">
+                    <h2 >{email.subject}</h2>
+                </div>
+                <p className="email-from">{email.fromEmail}</p>
+                <p className="email-to">to {emailService.isLoggedinUser(email.toEmail) ? 'me' : email.toEmail}</p>
+
+                <p className="email-date">{utilService.displayFullDate(email.sentAt)}</p>
+                <p className="email-body">{email.body}</p>
+            </section>
         </section>
     )
 }

@@ -14,7 +14,7 @@ export function EmailIndex() {
     const [emails, setEmails] = useState(null)
     const [menuCollapsed, setMenuCollapsed] = useState(false)
     const [foldersHovered, setFoldersHovered] = useState(false)
-    const {folder, emailId } = useParams()
+    const { folder, emailId } = useParams()
     const [filterBy, setFilterBy] = useState(emailService.getDefaultFilter({ folder }))
 
     useEffect(() => {
@@ -143,9 +143,11 @@ export function EmailIndex() {
 
             <EmailFolderList onFoldersHover={onFoldersHover} onFoldersClick={onFoldersClick} />
 
-            { emailId ? <Outlet />: 
-                <EmailList emails={emails} onRemoveMail={onRemoveMail} onStarClick={onStarClick} onToggleRead={onToggleRead} onSetIsRead={onSetIsRead} onChangeStatus={onChangeStatus} />
-            }
+            <section className="email-index__content">
+                {emailId ? <Outlet /> :
+                    <EmailList emails={emails} onRemoveMail={onRemoveMail} onStarClick={onStarClick} onToggleRead={onToggleRead} onSetIsRead={onSetIsRead} onChangeStatus={onChangeStatus} />
+                }
+            </section>
         </section>
     )
 }
