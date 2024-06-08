@@ -6,6 +6,7 @@ import { EmailFilter } from "../cmps/EmailFilter.jsx";
 import { EmailFolderList } from "../cmps/EmailFolderList.jsx";
 import { NavLink } from "react-router-dom";
 import { EmailMenuButton } from "../cmps/EmailMenuButton.jsx";
+import { EmailEdit } from "../cmps/EmailEdit.jsx";
 
 import imgUrl from '../assets/images/logo_gmail.png'
 
@@ -37,7 +38,7 @@ export function EmailIndex() {
             await emailService.save(newEmail)
             let newEmails = emails.map(email => email.id === newEmail.id ? newEmail : email)
 
-            // If the update was involved removing an email, remove it from the list
+            // If the update involved removing an email, remove it from the list too
             if (newEmail.status === 'trash') {
                 newEmails = newEmails.filter(email => email.id !== newEmail.id || emailService.isInFilter(email, filterBy))
             }
@@ -70,6 +71,7 @@ export function EmailIndex() {
     if (!emails) return <div>Loading...</div>
     return (
         <section className={`email-index ${menuCollapsed ? 'menu-collapsed' : ''} ${foldersHovered ? 'folders-hovered' : ''} `}>
+            <EmailEdit />
             <header className="email-index__header">
                 <div className="email-index__menu-logo">
                     <EmailMenuButton onMenuBtnClick={onMenuBtnClick} />

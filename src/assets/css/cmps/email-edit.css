@@ -1,0 +1,9 @@
+.email-edit {
+	background: rgba(0, 0, 0, 0.4);
+	display: grid;
+	height: 100%;
+	position: fixed;
+	place-content: center;
+	width: 100%;
+	z-index: 7;
+}

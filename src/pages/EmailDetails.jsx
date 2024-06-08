@@ -13,6 +13,7 @@ export function EmailDetails() {
     }, [params.emailId])
 
     async function loadEmail() {
+        if (params.emailId === "0") return
         const email = await emailService.getById(params.emailId)
         setEmail(email)
     }

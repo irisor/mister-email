@@ -6,6 +6,7 @@
     --mister-email-hover: rgba(32, 33, 36, 0.059);
     --mister-email-active: #d3e3fd;
     --mister-email-details-text: #1f1f1f;
+    --mister-email-folders-text: #001d35;
 }
 
 * {
