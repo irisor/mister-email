@@ -55,7 +55,7 @@
 	}
 	
 	&.read {
-		background-color: #f2f6fc;
+		background-color: var(--mister-email-background-tertiary);
 
 		.email-preview__subject {
 			font-weight: normal;

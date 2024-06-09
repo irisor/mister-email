@@ -48,7 +48,7 @@
 	}
 
 	.email-index__content {
-		background-color: white;
+		background-color: var(--mister-email-white);
 		border-radius: 16px;
 		grid-area: list;
 	}

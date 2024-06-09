@@ -1,12 +1,14 @@
 :root {
     --mister-email-background: #f6f8fc;
     --mister-email-background-secondary: #eaf1fb;
+    --mister-email-background-tertiary: #f2f6fc;
     --mister-email-text: #202124;
     --mister-email-text-secondary: #5f6368;
     --mister-email-hover: rgba(32, 33, 36, 0.059);
     --mister-email-active: #d3e3fd;
     --mister-email-details-text: #1f1f1f;
     --mister-email-folders-text: #001d35;
+    --mister-email-white: #fff;
 }
 
 * {

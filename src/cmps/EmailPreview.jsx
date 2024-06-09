@@ -42,7 +42,7 @@ export function EmailPreview({ email, onUpdateEmail }) {
 
     return (
         <article className={`email-preview ${email.isRead ? 'read' : ''} ${isSelected ? 'selected' : ''} ${isHovered ? 'hovered' : ''} `} id={email.id} key={email.id} onMouseOver={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)} >
-            <Link className="email-preview__link" to={`/mail/${email.status}/${email.id}`} onClick={(event)=>onSetIsReadPreview(event)}>
+            <Link className="email-preview__link" to={email.status === 'draft' ? `?compose=${email.id}` : `/mail/${email.status}/${email.id}`} onClick={(event)=>onSetIsReadPreview(event)}>
                 <button className={`email-preview__checkbox`} onClick={(event) => onChecked(event)}></button>
                 <button className={`email-preview__star ${email.isStarred ? 'starred' : ''}`} onClick={(event) => onStarClickPreview(event)}></button>
                 <div className="email-preview__from">{email.fromFullname}</div>

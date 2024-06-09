@@ -28,6 +28,8 @@
 		display: grid;
 		grid-template-columns: 1fr;
 		grid-auto-rows: 32px;
+        height: calc(100vh - 80px - 64px - 16px);
+		overflow-y: auto;
 	}
 
 	.email-folder-list__compose {
