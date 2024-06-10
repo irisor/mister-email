@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { Outlet, useParams } from "react-router"
+import { Outlet, useParams, useNavigate } from "react-router"
 import { emailService } from "../services/email.service.js"
 import { EmailList } from "../cmps/EmailList.jsx";
 import { EmailFilter } from "../cmps/EmailFilter.jsx";
@@ -17,6 +17,7 @@ export function EmailIndex() {
     const [foldersHovered, setFoldersHovered] = useState(false)
     const {folder, emailId} = useParams()
     const [filterBy, setFilterBy] = useState(emailService.getDefaultFilter({ folder }))
+    const navigate = useNavigate()
 
     useEffect(() => {
         const newFilterBy = emailService.getDefaultFilter({ folder });
@@ -63,15 +64,31 @@ export function EmailIndex() {
         }
     }
 
-
     function onSetFilterBy(filterBy) {
         setFilterBy(prevFilter => ({ ...prevFilter, ...filterBy }))
+    }
+
+    async function onSaveEmail(emailToSave) {
+        try {
+            const email = await emailService.save(emailToSave)
+            if (!emailToSave.id) {
+                setEmails(prevEmail => [email, ...prevEmail])
+            } else {
+                setEmails(prevEmails => prevEmails.map(_email => _email.id === email.id ? email : _email))
+            }
+        } catch (err) {
+            console.log('err:', err)
+        }
+    }
+
+    function onCloseEmail() {
+        navigate(`/mail/${folder}`)
     }
 
     if (!emails) return <div>Loading...</div>
     return (
         <section className={`email-index ${menuCollapsed ? 'menu-collapsed' : ''} ${foldersHovered ? 'folders-hovered' : ''} `}>
-            <EmailEdit />
+            <EmailEdit onSaveEmail={onSaveEmail} onCloseEmail={onCloseEmail} />
             <header className="email-index__header">
                 <div className="email-index__menu-logo">
                     <EmailMenuButton onMenuBtnClick={onMenuBtnClick} />

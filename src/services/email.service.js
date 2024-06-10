@@ -10,6 +10,7 @@ export const emailService = {
     getById,
     createEmail,
     getDefaultFilter,
+    getLoggedinUser,
 }
 
 const loggedinUser = {
@@ -19,6 +20,10 @@ const loggedinUser = {
 
 function isLoggedinUser(email) {
     return email === loggedinUser.email
+}
+
+function getLoggedinUser() {
+    return loggedinUser
 }
 
 
@@ -61,11 +66,18 @@ function save(mailToSave) {
     }
 }
 
-function createEmail(model = '', type = '', batteryStatus = 100) {
+function createEmail(id = "", fromEmail = loggedinUser.email, fromFullname = loggedinUser.fullname, toEmail="", toFullname="", subject="", status="draft", body="", isRead=true, removedAt=null ) {
     return {
-        model,
-        batteryStatus,
-        type
+        id,
+        fromEmail, 
+        fromFullname,
+        toEmail,
+        toFullname,
+        subject,
+        status,
+        body,
+        isRead,
+        removedAt,
     }
 }
 

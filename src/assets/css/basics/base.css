@@ -68,6 +68,7 @@ button {
 
 input {
     font-family: inherit;
+    font-size: inherit;
     text-align: inherit;
 }
 
@@ -75,6 +76,13 @@ select,
 option {
     font-family: inherit;
     font-size: inherit;
+}
+
+textarea {
+    color: inherit;
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: inherit;
 }
 
 .back {
