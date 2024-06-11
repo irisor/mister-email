@@ -8,6 +8,12 @@
 		color: #747775;
 	}
 
+	button {
+		background-color: transparent;
+		border: none;
+		cursor: pointer;
+	}
+
 	&.minimized {
 		.email-edit__action.minimize {
 			background-image: url('../../images/icons/maximize.png');
@@ -32,7 +38,7 @@
 		place-content: end;
 		width: 450px;
 	}
- 
+
 	.email-edit__header {
 		background-color: var(--mister-email-background-tertiary);
 		display: grid;
@@ -60,7 +66,7 @@
 
 		&:hover {
 			background-color: rgba(68, 71, 70, 0.078);
-    		opacity: 1;
+			opacity: 1;
 		}
 
 		&.minimize {
@@ -117,6 +123,74 @@
 		color: #222;
 		line-height: 1.5;
 		outline: none;
-		padding: 10px 0
+		padding: 10px 0;
+		resize: none;
+	}
+
+	.email-edit__footer {
+		align-items: center;
+		display: grid;
+		justify-content: space-between;
+		gap: 4px;
+		grid-template-columns: auto auto;
+		padding: 12px 0 16px;
+	}
+
+	.email-edit__footer-send {
+		align-items: center;
+		background-color: #0b57d0;
+		border-radius: 18px;
+		color: var(--mister-email-white);
+		display: flex;
+		height: 36px;
+		justify-content: center;
+		max-width: 104px;
+		min-width: 72px;
+
+		&:hover {
+			background-color: #1b61d1;
+			border: none;
+			box-shadow: 0 1px 2px 0 rgba(26, 115, 232, 0.451), 0 1px 3px 1px rgba(26, 115, 232, 0.302);
+			outline: 1px solid transparent;
+		}
+	}
+
+	.email-edit__footer-delete {
+		background-image: url(../../images/icons/delete.png);
+		background-position: center;
+		background-repeat: no-repeat;
+		background-size: 20px;
+		height: 20px;
+		margin-inline: 10px;
+		position: relative;
+		width: 20px;
+
+		&:before {
+			content: "";
+			display: block;
+			opacity: 0;
+			position: absolute;
+			transition-duration: .15s;
+			transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+			z-index: -1;
+			bottom: -4px;
+			left: -4px;
+			right: -4px;
+			top: -4px;
+			background: none;
+			box-sizing: border-box;
+			transform: scale(0);
+			transition-property: transform, opacity, -webkit-transform;
+			border-radius: 4px;
+		}
+
+		&:hover:before {
+			background-color: rgba(32, 33, 36, 0.059);
+			border: none;
+			box-shadow: none;
+			opacity: 1;
+			transform: scale(1);
+			z-index: 1;
+		}
 	}
 }

@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react"
 import { emailService } from "../services/email.service"
 
-export function EmailEdit({ emailId, onSaveEmail, onCloseEmail }) {
+export function EmailEdit({ emailId, onUpdateEmail, onCloseEmail }) {
 	const [isMinimized, setIsMinimized] = useState(false)
 	const [isFullScreen, setIsFullScreen] = useState(false)
 	const [email, setEmail] = useState(emailService.createEmail())
@@ -40,6 +40,10 @@ export function EmailEdit({ emailId, onSaveEmail, onCloseEmail }) {
 		} else {
 			// Handle an existing email
 			emailService.getById(emailId).then((_email) => {
+				if (!_email.isRead) {
+					_email.isRead = true
+					onUpdateEmail(_email)
+				}
 				setEmail(_email);
 				setLastSavedEmail(_email)
 			});
@@ -61,7 +65,7 @@ export function EmailEdit({ emailId, onSaveEmail, onCloseEmail }) {
 
 	useEffect(() => {
 		// Handle saving the email on email changes
-		if (onSaveEmail && isEmailChanged(email, lastSavedEmail)) {
+		if (onUpdateEmail && isEmailChanged(email, lastSavedEmail)) {
 			recentEmail.current = email
 			console.log("useEffect 2 timeout=", saveTimeout.current)
 			if (!saveTimeout.current) {
@@ -74,11 +78,7 @@ export function EmailEdit({ emailId, onSaveEmail, onCloseEmail }) {
 		}
 		//Update the title
 		if (title !== 'Draft saved') {
-			setTitle(() => {
-				let title
-				title = email.id ? email.subject : 'New Message'
-				return title
-			})
+			setTitle(() => email.id ? email.subject : 'New Message')
 		}
 	}, [email])
 
@@ -98,26 +98,38 @@ export function EmailEdit({ emailId, onSaveEmail, onCloseEmail }) {
 		setEmail(prev => ({ ...prev, [field]: value }))
 	}
 
-	function handleSaveEmail(email) {
-		onSaveEmail(email)
+	function handleSaveEmail(_email) {
+		onUpdateEmail(_email)
 		if (saveTimeout.current) clearTimeout(saveTimeout.current)
 		saveTimeout.current = null
 		setTitle('Draft saved')
 		titleTimeout.current = setTimeout(() => {
-			setTitle(email.id ? email.subject : 'New Message')
+			setTitle(_email.id ? _email.subject : 'New Message')
 		}, 2000)
 
 	}
 
 	function handleCloseEmail() {
-		if (onSaveEmail && isEmailChanged(email, lastSavedEmail)) {
-			onSaveEmail(email)
+		if (onUpdateEmail && isEmailChanged(email, lastSavedEmail)) {
+			onUpdateEmail(email)
 			if (saveTimeout.current) {
 				clearTimeout(saveTimeout.current)
 			}
 		}
 		onCloseEmail()
 	}
+
+	function handleSend(event) {
+		event.preventDefault()
+		handleSaveEmail ({ ...email, status: 'sent' })
+		onCloseEmail()
+	}
+
+	function handleDelete(event) {
+        event.preventDefault()
+        handleSaveEmail({...email, status: 'trash'})
+		onCloseEmail()
+    }
 
 	function isEmailChanged(email1, email2) {
 		const { id: _id1, ...restEmail1 } = email1;
@@ -151,6 +163,10 @@ export function EmailEdit({ emailId, onSaveEmail, onCloseEmail }) {
 					</div>
 					<input className="email-edit__subject" type="text" placeholder="Subject" value={subject} onChange={event => handleChange(event)} name="subject" />
 					<textarea className="email-edit__body" type="text" value={body} onChange={event => handleChange(event)} name="body" />
+					<div className="email-edit__footer">
+						<button className="email-edit__footer-send" onClick={event => handleSend(event)}>Send</button>
+						<button className="email-edit__footer-delete" onClick={event => handleDelete(event)}></button>
+					</div>
 				</form>
 			</div>
 		</section>

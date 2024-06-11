@@ -16,7 +16,7 @@ export function EmailIndex() {
     const [emails, setEmails] = useState(null)
     const [menuCollapsed, setMenuCollapsed] = useState(false)
     const [foldersHovered, setFoldersHovered] = useState(false)
-    const {folder, emailId} = useParams()
+    const { folder, emailId } = useParams()
     const [filterBy, setFilterBy] = useState(emailService.getDefaultFilter({ folder }))
     const navigate = useNavigate()
     const [searchParams, setSearchParams] = useSearchParams()
@@ -34,22 +34,6 @@ export function EmailIndex() {
             setEmails(emails);
         } catch (error) {
             console.log('Having issues with loading e-mails:', error);
-        }
-    }
-
-    async function onUpdateEmail(newEmail) {
-        try {
-            await emailService.save(newEmail)
-            let newEmails = emails.map(email => email.id === newEmail.id ? newEmail : email)
-
-            // If the update involved removing an email, remove it from the list too
-            if (newEmail.status === 'trash') {
-                newEmails = newEmails.filter(email => email.id !== newEmail.id || emailService.isInFilter(email, filterBy))
-            }
-            setEmails(() => newEmails)
-
-        } catch (error) {
-            console.log('Having issues updating e-mail:', error)
         }
     }
 
@@ -71,17 +55,23 @@ export function EmailIndex() {
         setFilterBy(prevFilter => ({ ...prevFilter, ...filterBy }))
     }
 
-    async function onSaveEmail(emailToSave) {
+    async function onUpdateEmail(emailToSave) {
         try {
             const email = await emailService.save(emailToSave)
             if (!emailToSave.id) {
                 setEmails(prevEmail => [email, ...prevEmail])
                 setSearchParams(prev => ({ ...prev, compose: email.id }))
             } else {
-                setEmails(prevEmails => prevEmails.map(_email => _email.id === email.id ? email : _email))
+                let newEmails = emails.map(email => email.id === emailToSave.id ? emailToSave : email)
+
+                // If the update involved removing or sending an email, remove the email from the list immediately
+                if (emailToSave.status === 'trash' || emailToSave.status === 'sent') {
+                    newEmails = newEmails.filter(email => email.id !== emailToSave.id || emailService.isInFilter(email, filterBy))
+                }
+                setEmails(() => newEmails)
             }
-        } catch (err) {
-            console.log('err:', err)
+        } catch (error) {
+            console.log('Having issues updating e-mail: ', error)
         }
     }
 
@@ -92,9 +82,9 @@ export function EmailIndex() {
     if (!emails) return <div>Loading...</div>
     return (
         <section className={`email-index ${menuCollapsed ? 'menu-collapsed' : ''} ${foldersHovered ? 'folders-hovered' : ''} `}>
-            
+
             {/* Display EmailEdit only if compose search param exists*/}
-            {compose ? <EmailEdit emailId={compose === 'new' ? 0 : compose} onSaveEmail={onSaveEmail} onCloseEmail={onCloseEmail} /> : null}
+            {compose ? <EmailEdit emailId={compose === 'new' ? 0 : compose} onUpdateEmail={onUpdateEmail} onCloseEmail={onCloseEmail} /> : null}
             <header className="email-index__header">
                 <div className="email-index__menu-logo">
                     <EmailMenuButton onMenuBtnClick={onMenuBtnClick} />
