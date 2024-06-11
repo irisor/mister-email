@@ -132,7 +132,9 @@ export function EmailEdit({ emailId, onUpdateEmail, onCloseEmail }) {
     }
 
 	function isEmailChanged(email1, email2) {
+		// eslint-disable-next-line no-unused-vars
 		const { id: _id1, ...restEmail1 } = email1;
+		// eslint-disable-next-line no-unused-vars
 		const { id: _id2, ...restEmail2 } = email2;
 		return JSON.stringify(restEmail1) !== JSON.stringify(restEmail2);
 	}
@@ -150,7 +152,7 @@ export function EmailEdit({ emailId, onUpdateEmail, onCloseEmail }) {
 						<div className="email-edit__action close" onClick={() => handleCloseEmail()}></div>
 					</div>
 				</div>
-				<form className="email-edit__form" open>
+				<form className="email-edit__form" onSubmit={event => handleSend(event)}>
 					<div className="email-edit__from-container two-items">
 						<label className="email-edit__from-label">From </label>
 						<div className="email-edit__from" id="from" type="email">
