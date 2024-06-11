@@ -1,6 +1,7 @@
 .email-edit {
 	inset-block-end: 0;
 	inset-inline-end: 0;
+	max-width: 100%;
 	position: fixed;
 	z-index: 7;
 
