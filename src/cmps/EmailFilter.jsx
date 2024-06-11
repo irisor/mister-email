@@ -17,12 +17,14 @@ export function EmailFilter({ onMenuBtnClick, filterBy, onSetFilterBy }) {
 					placeholder="Search mail"
 					value={filterBy.text || ''}
 					onChange={(event) => onSetFilterBy({ text: event.target.value })}
+					name="search"
 				/>
 			</form>
 			<select
 				className="email-filter__read-status"
 				value={filterBy.readStatus}
 				onChange={(ev) => onSetFilterBy({ readStatus: ev.target.value })}
+				name="readStatus"
 			>
 				<option value="All">All</option>
 				<option value="Read">Read</option>

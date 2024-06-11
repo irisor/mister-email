@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react"
 import { Outlet, useParams, useNavigate } from "react-router"
+import { useSearchParams } from "react-router-dom"
 import { emailService } from "../services/email.service.js"
 import { EmailList } from "../cmps/EmailList.jsx";
 import { EmailFilter } from "../cmps/EmailFilter.jsx";
 import { EmailFolderList } from "../cmps/EmailFolderList.jsx";
 import { NavLink } from "react-router-dom";
 import { EmailMenuButton } from "../cmps/EmailMenuButton.jsx";
-import { EmailEdit } from "../cmps/EmailEdit.jsx";
+import { EmailEdit } from "./EmailEdit.jsx";
 
 import imgUrl from '../assets/images/logo_gmail.png'
 
@@ -18,6 +19,8 @@ export function EmailIndex() {
     const {folder, emailId} = useParams()
     const [filterBy, setFilterBy] = useState(emailService.getDefaultFilter({ folder }))
     const navigate = useNavigate()
+    const [searchParams, setSearchParams] = useSearchParams()
+    const compose = searchParams.get('compose')
 
     useEffect(() => {
         const newFilterBy = emailService.getDefaultFilter({ folder });
@@ -73,6 +76,7 @@ export function EmailIndex() {
             const email = await emailService.save(emailToSave)
             if (!emailToSave.id) {
                 setEmails(prevEmail => [email, ...prevEmail])
+                setSearchParams(prev => ({ ...prev, compose: email.id }))
             } else {
                 setEmails(prevEmails => prevEmails.map(_email => _email.id === email.id ? email : _email))
             }
@@ -88,7 +92,9 @@ export function EmailIndex() {
     if (!emails) return <div>Loading...</div>
     return (
         <section className={`email-index ${menuCollapsed ? 'menu-collapsed' : ''} ${foldersHovered ? 'folders-hovered' : ''} `}>
-            <EmailEdit onSaveEmail={onSaveEmail} onCloseEmail={onCloseEmail} />
+            
+            {/* Display EmailEdit only if compose search param exists*/}
+            {compose ? <EmailEdit emailId={compose === 'new' ? 0 : compose} onSaveEmail={onSaveEmail} onCloseEmail={onCloseEmail} /> : null}
             <header className="email-index__header">
                 <div className="email-index__menu-logo">
                     <EmailMenuButton onMenuBtnClick={onMenuBtnClick} />
@@ -103,10 +109,10 @@ export function EmailIndex() {
 
             <section className="email-index__content">
                 {emailId ? <Outlet /> :
-                    <EmailList 
-                        emails={emails} 
+                    <EmailList
+                        emails={emails}
                         onUpdateEmail={onUpdateEmail}
-                     />
+                    />
                 }
             </section>
         </section>

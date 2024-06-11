@@ -51,6 +51,12 @@ h2 {
     font-weight: 400;
 }
 
+h5 {
+    color: #041e49;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
 a {
     text-decoration: none;
     color: inherit;
