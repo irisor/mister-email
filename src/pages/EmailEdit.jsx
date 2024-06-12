@@ -161,12 +161,12 @@ export function EmailEdit({ emailId, onUpdateEmail, onCloseEmail }) {
 					</div>
 					<div className="email-edit__to-container two-items">
 						<label className="email-edit__to-label">To </label>
-						<input className="email-edit__to" type="email" value={toEmail} onChange={event => handleChange(event)} name="toEmail" />
+						<input className="email-edit__to" type="email" value={toEmail} onChange={event => handleChange(event)} name="toEmail" required/>
 					</div>
 					<input className="email-edit__subject" type="text" placeholder="Subject" value={subject} onChange={event => handleChange(event)} name="subject" autoComplete="off"/>
 					<textarea className="email-edit__body" type="text" value={body} onChange={event => handleChange(event)} name="body" />
 					<div className="email-edit__footer">
-						<button className="email-edit__footer-send" onClick={event => handleSend(event)}>Send</button>
+						<button className="email-edit__footer-send">Send</button>
 						<button className="email-edit__footer-delete" onClick={event => handleDelete(event)}></button>
 					</div>
 				</form>
