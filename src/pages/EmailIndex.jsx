@@ -25,8 +25,11 @@ export function EmailIndex() {
     useEffect(() => {
         const newFilterBy = emailService.getDefaultFilter({ folder });
         setFilterBy(newFilterBy);
-        loadMails(newFilterBy)
     }, [folder])
+
+    useEffect(() => {
+        loadMails(filterBy)
+    }, [filterBy])
 
     async function loadMails(filterBy) {
         try {
