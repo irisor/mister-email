@@ -10,6 +10,7 @@
 		flex: 1;
 		height: 48px;
 		margin-inline-start: 10px;
+		overflow: hidden;
 	}
 
 	.email-filter__search-form:focus-within {
@@ -40,7 +41,7 @@
 	}	
 
 	.email-filter__search {
-		background-color: transparent;
+		background-color: transparent !important;
 		border: none;
 		width: 100%;
 	}

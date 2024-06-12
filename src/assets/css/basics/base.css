@@ -78,6 +78,11 @@ input {
     text-align: inherit;
 }
 
+/* This is to avoid autofill style issuesd */
+input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0px 1000px white inset;
+}
+
 select,
 option {
     font-family: inherit;

@@ -58,7 +58,6 @@ export function EmailIndex() {
     async function onUpdateEmail(emailToSave) {
         try {
             const email = await emailService.save(emailToSave)
-            console.log("folder", folder)
             if (!emailToSave.id) {
                 if (folder === 'draft') setEmails(prevEmail => [email, ...prevEmail])
                 if (compose) setSearchParams(prev => ({ ...prev, compose: email.id }))
