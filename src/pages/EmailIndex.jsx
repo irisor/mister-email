@@ -101,10 +101,11 @@ export function EmailIndex() {
             <EmailFolderList onFoldersHover={onFoldersHover} onFoldersClick={onFoldersClick} />
 
             <section className="email-index__content">
-                {emailId ? <Outlet /> :
+                {emailId ? <Outlet context={{ ping: 'ping', onCloseEmail }} /> :
                     <EmailList
                         emails={emails}
                         onUpdateEmail={onUpdateEmail}
+                        folder={folder}
                     />
                 }
             </section>

@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react"
-import { Link, useParams } from 'react-router-dom'
+import { useParams, useOutletContext } from 'react-router-dom'
 import { emailService } from "../services/email.service"
 import { utilService } from "../services/util.service.js"
 
 export function EmailDetails() {
 
+
+    const {onCloseEmail} = useOutletContext ()
     const [email, setEmail] = useState(null)
     const params = useParams()
 
@@ -22,7 +24,7 @@ export function EmailDetails() {
     return (
         <section className="email-details">
             <section className="email-header">
-                <Link className="back" to={`/mail/${email.status}`}></Link>
+                <div className="back" onClick={() => onCloseEmail()}></div>
             </section>
             <section className="email-content">
                 <div className="email-subject">

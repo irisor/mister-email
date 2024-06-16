@@ -1,7 +1,7 @@
 import { EmailPreview } from "./EmailPreview";
 
 // export function MailList({ mails, onRemoveMail }) {
-export function EmailList({ emails, onUpdateEmail }) {
+export function EmailList({ emails, onUpdateEmail, folder }) {
 
     return (
         <section className="email-list">
@@ -11,6 +11,7 @@ export function EmailList({ emails, onUpdateEmail }) {
                         <EmailPreview 
                             email={email} 
                             onUpdateEmail={onUpdateEmail}
+                            folder={folder}
                             />
                     </li>
                 )}

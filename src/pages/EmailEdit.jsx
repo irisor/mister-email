@@ -123,7 +123,7 @@ export function EmailEdit({ emailId, onUpdateEmail, onCloseEmail }) {
 
 	function handleSend(event) {
 		event.preventDefault()
-		handleSaveEmail ({ ...email, sentAt: new Date() })
+		handleSaveEmail ({ ...email, sentAt: new Date(), removedAt: null })
 		onCloseEmail()
 	}
 

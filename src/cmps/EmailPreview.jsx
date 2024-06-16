@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { utilService } from "../services/util.service";
 
-export function EmailPreview({ email, onUpdateEmail }) {
+export function EmailPreview({ email, onUpdateEmail, folder }) {
     const [isHovered, setIsHovered] = useState(false);
     const [isSelected, setIsSelected] = useState(false);
 
@@ -42,7 +42,7 @@ export function EmailPreview({ email, onUpdateEmail }) {
 
     return (
         <article className={`email-preview ${email.isRead ? 'read' : ''} ${isSelected ? 'selected' : ''} ${isHovered ? 'hovered' : ''} `} id={email.id} key={email.id} onMouseOver={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)} >
-            <Link className="email-preview__link" to={email.status === 'draft' ? `?compose=${email.id}` : `/mail/${email.status}/${email.id}`} onClick={(event)=>onSetIsReadPreview(event)}>
+            <Link className="email-preview__link" to={!email.sentAt ? `?compose=${email.id}` : `/mail/${folder}/${email.id}`} onClick={(event)=>onSetIsReadPreview(event)}>
                 <button className={`email-preview__checkbox`} onClick={(event) => onChecked(event)}></button>
                 <button className={`email-preview__star ${email.isStarred ? 'starred' : ''}`} onClick={(event) => onStarClickPreview(event)}></button>
                 <div className="email-preview__from">{email.fromFullname}</div>
