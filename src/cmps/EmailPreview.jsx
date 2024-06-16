@@ -14,29 +14,29 @@ export function EmailPreview({ email, onUpdateEmail }) {
     function onStarClickPreview(event) {
         event.preventDefault()
         event.stopPropagation()
-        onUpdateEmail({...email, isStarred: !email.isStarred})
+        onUpdateEmail({...email, isStarred: !email.isStarred}, 'star')
     }
 
     function onRemoveMailPreview(event) {
         event.preventDefault();
         event.stopPropagation();
-        onUpdateEmail({...email, status: 'trash'})
+        onUpdateEmail({...email, removedAt: new Date()}, 'remove')
     }
 
     function onToggleReadPreview(event) {
         event.preventDefault();
         event.stopPropagation();
-        onUpdateEmail({...email, isRead: !email.isRead})
+        onUpdateEmail({...email, isRead: !email.isRead}, 'read')
     }
 
-    function onChangeStatusPreview(event, newStatus) {
+    function onArchive(event) {
         event.preventDefault();
         event.stopPropagation();
-        onUpdateEmail({...email, status: newStatus})
+        onUpdateEmail({...email, archivedAt: new Date()}, 'archive')
     }
 
     function onSetIsReadPreview() {
-        onUpdateEmail({...email, isRead: true})
+        onUpdateEmail({...email, isRead: true}, 'read')
     }
 
 
@@ -54,7 +54,7 @@ export function EmailPreview({ email, onUpdateEmail }) {
                 </div>
                 <div className="email-preview__date">{utilService.displayShortDate(email.sentAt)}</div>
                 <div className="email-preview__actions">
-                    <button className="email-preview__action archive" onClick={(event) => onChangeStatusPreview(event, 'archive')}></button>
+                    <button className="email-preview__action archive" onClick={(event) => onArchive(event, 'archive')}></button>
                     <button className="email-preview__action delete" onClick={(event) => onRemoveMailPreview(event)}></button>
                     <button className="email-preview__action unread" onClick={(event) => onToggleReadPreview(event)}></button>
                 </div>

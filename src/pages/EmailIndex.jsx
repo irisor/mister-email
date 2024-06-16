@@ -58,7 +58,7 @@ export function EmailIndex() {
         setFilterBy(prevFilter => ({ ...prevFilter, ...filterBy }))
     }
 
-    async function onUpdateEmail(emailToSave) {
+    async function onUpdateEmail(emailToSave, action='') {
         try {
             const email = await emailService.save(emailToSave)
             if (!emailToSave.id) {
@@ -67,8 +67,8 @@ export function EmailIndex() {
             } else {
                 let newEmails = emails.map(email => email.id === emailToSave.id ? emailToSave : email)
 
-                // If the update involved removing or sending an email, remove the email from the list immediately
-                if (emailToSave.status === 'trash' || emailToSave.status === 'sent' || emailToSave.status === 'draft' && folder!== 'draft') {
+                // If the update involved removing or sending or archiving an email, or creating a draft when not in draft folderremove the email from the list immediately
+                if (action === 'remove' || action === 'send' || action === 'archive' || action === 'draft' && folder !== 'draft') {
                     newEmails = newEmails.filter(email => email.id !== emailToSave.id || emailService.isInFilter(email, filterBy))
                 }
                 setEmails(() => newEmails)

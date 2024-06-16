@@ -42,7 +42,7 @@ export function EmailEdit({ emailId, onUpdateEmail, onCloseEmail }) {
 			emailService.getById(emailId).then((_email) => {
 				if (!_email.isRead) {
 					_email.isRead = true
-					onUpdateEmail(_email)
+					onUpdateEmail(_email, 'read')
 				}
 				setEmail(_email);
 				setLastSavedEmail(_email)
@@ -99,7 +99,9 @@ export function EmailEdit({ emailId, onUpdateEmail, onCloseEmail }) {
 	}
 
 	function handleSaveEmail(_email) {
-		onUpdateEmail(_email)
+		const action = _email.sentAt ? 'send' : 'draft'
+
+		onUpdateEmail(_email, action)
 		if (saveTimeout.current) clearTimeout(saveTimeout.current)
 		saveTimeout.current = null
 		setTitle('Draft saved')
@@ -111,7 +113,7 @@ export function EmailEdit({ emailId, onUpdateEmail, onCloseEmail }) {
 
 	function handleCloseEmail() {
 		if (onUpdateEmail && isEmailChanged(email, lastSavedEmail)) {
-			onUpdateEmail(email)
+			onUpdateEmail(email, 'draft')
 			if (saveTimeout.current) {
 				clearTimeout(saveTimeout.current)
 			}
@@ -121,13 +123,13 @@ export function EmailEdit({ emailId, onUpdateEmail, onCloseEmail }) {
 
 	function handleSend(event) {
 		event.preventDefault()
-		handleSaveEmail ({ ...email, status: 'sent' })
+		handleSaveEmail ({ ...email, sentAt: new Date() })
 		onCloseEmail()
 	}
 
 	function handleDelete(event) {
         event.preventDefault()
-        handleSaveEmail({...email, status: 'trash'})
+        handleSaveEmail({...email, removedAt: new Date()})
 		onCloseEmail()
     }
 
