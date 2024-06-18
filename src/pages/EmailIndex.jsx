@@ -20,11 +20,17 @@ export function EmailIndex() {
     const [filterBy, setFilterBy] = useState(emailService.getDefaultFilter({ folder }))
     const navigate = useNavigate()
     const [searchParams, setSearchParams] = useSearchParams()
-    const compose = searchParams.get('compose')
+    const [composeValue, setComposeValue] = useState(null);
 
     useEffect(() => {
-        const newFilterBy = emailService.getDefaultFilter({ folder });
-        setFilterBy(newFilterBy);
+        const newComposeValue = searchParams.get('compose');
+        if (newComposeValue !== composeValue) {
+            setComposeValue(newComposeValue);
+        }
+    }, [searchParams]);
+
+    useEffect(() => {
+        setFilterBy(emailService.getDefaultFilter({ folder }));
     }, [folder])
 
     useEffect(() => {
@@ -45,7 +51,7 @@ export function EmailIndex() {
     }
 
     function onFoldersHover(status) {
-        setTimeout(setFoldersHovered(status === 'start' ? true : false), 1000)
+        setFoldersHovered(status === 'start' ? true : false)
     }
 
     function onFoldersClick() {
@@ -58,12 +64,12 @@ export function EmailIndex() {
         setFilterBy(prevFilter => ({ ...prevFilter, ...filterBy }))
     }
 
-    async function onUpdateEmail(emailToSave, action='') {
+    async function onUpdateEmail(emailToSave, action = '') {
         try {
             const email = await emailService.save(emailToSave)
             if (!emailToSave.id) {
                 if (folder === 'draft') setEmails(prevEmail => [email, ...prevEmail])
-                if (compose) setSearchParams(prev => ({ ...prev, compose: email.id }))
+                if (composeValue) setSearchParams(prev => ({ ...prev, compose: email.id }))
             } else {
                 let newEmails = emails.map(email => email.id === emailToSave.id ? emailToSave : email)
 
@@ -71,7 +77,7 @@ export function EmailIndex() {
                 if (action === 'remove' || action === 'send' || action === 'archive' || action === 'draft' && folder !== 'draft') {
                     newEmails = newEmails.filter(email => email.id !== emailToSave.id || emailService.isInFilter(email, filterBy))
                 }
-                setEmails(() => newEmails)
+                setEmails(newEmails)
             }
         } catch (error) {
             console.log('Having issues updating e-mail: ', error)
@@ -80,14 +86,14 @@ export function EmailIndex() {
 
     function onCloseEmail() {
         navigate(`/mail/${folder}`)
+        setComposeValue(null)
     }
 
     if (!emails) return <div>Loading...</div>
     return (
         <section className={`email-index ${menuCollapsed ? 'menu-collapsed' : ''} ${foldersHovered ? 'folders-hovered' : ''} `}>
 
-            {/* Display EmailEdit only if compose search param exists*/}
-            {compose ? <EmailEdit emailId={compose === 'new' ? 0 : compose} onUpdateEmail={onUpdateEmail} onCloseEmail={onCloseEmail} /> : null}
+            {composeValue ? <EmailEdit emailId={composeValue === 'new' ? 0 : composeValue} onUpdateEmail={onUpdateEmail} onCloseEmail={onCloseEmail} /> : null}
             <header className="email-index__header">
                 <div className="email-index__menu-logo">
                     <EmailMenuButton onMenuBtnClick={onMenuBtnClick} />
@@ -112,3 +118,4 @@ export function EmailIndex() {
         </section>
     )
 }
+

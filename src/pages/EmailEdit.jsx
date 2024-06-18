@@ -18,10 +18,12 @@ export function EmailEdit({ emailId, onUpdateEmail, onCloseEmail }) {
 		return () => {
 			if (saveTimeout.current) {
 				clearTimeout(saveTimeout.current)
+				saveTimeout.current = null
 			}
 
 			if (titleTimeout.current) {
 				clearTimeout(titleTimeout.current)
+				titleTimeout.current = null
 			}
 		}
 	}, [])
@@ -30,6 +32,19 @@ export function EmailEdit({ emailId, onUpdateEmail, onCloseEmail }) {
 		// Save the previous email when switching to a new email
 		if (email && isEmailChanged(email, lastSavedEmail)) {
 			handleSaveEmail(email)
+			setTitle(null)
+			
+			// Reset timouts
+
+			if (saveTimeout.current) {
+				clearTimeout(saveTimeout.current)
+				saveTimeout.current = null
+			}
+
+			if (titleTimeout.current) {
+				clearTimeout(titleTimeout.current)
+				titleTimeout.current = null
+			}
 		}
 		// Handle a new email that is newly composed
 		if (!emailId || emailId === 0) {
@@ -49,32 +64,19 @@ export function EmailEdit({ emailId, onUpdateEmail, onCloseEmail }) {
 			});
 		}
 
-		// Reset timouts
-
-		if (saveTimeout.current) {
-			clearTimeout(saveTimeout.current)
-			saveTimeout.current = null
-		}
-
-		if (titleTimeout.current) {
-			clearTimeout(titleTimeout.current)
-			titleTimeout.current = null
-		}
-
 	}, [emailId])
 
 	useEffect(() => {
 		// Handle saving the email on email changes
 		if (onUpdateEmail && isEmailChanged(email, lastSavedEmail)) {
 			recentEmail.current = email
-			console.log("useEffect 2 timeout=", saveTimeout.current)
-			if (!saveTimeout.current) {
-				saveTimeout.current = setTimeout(() => {
-					setLastSavedEmail(recentEmail.current)
-					console.log("before onSaveEmail email=", recentEmail.current)
-					handleSaveEmail(recentEmail.current)
-				}, 5000)
+			if (saveTimeout.current) {
+				clearTimeout(saveTimeout.current)
 			}
+			saveTimeout.current = setTimeout(() => {
+				setLastSavedEmail(recentEmail.current)
+				handleSaveEmail(recentEmail.current)
+			}, 5000)
 		}
 		//Update the title
 		if (title !== 'Draft saved') {
@@ -102,8 +104,6 @@ export function EmailEdit({ emailId, onUpdateEmail, onCloseEmail }) {
 		const action = _email.sentAt ? 'send' : 'draft'
 
 		onUpdateEmail(_email, action)
-		if (saveTimeout.current) clearTimeout(saveTimeout.current)
-		saveTimeout.current = null
 		setTitle('Draft saved')
 		titleTimeout.current = setTimeout(() => {
 			setTitle(_email.id ? _email.subject : 'New Message')
@@ -111,9 +111,9 @@ export function EmailEdit({ emailId, onUpdateEmail, onCloseEmail }) {
 
 	}
 
-	function handleCloseEmail() {
+	async function handleCloseEmail() {
 		if (onUpdateEmail && isEmailChanged(email, lastSavedEmail)) {
-			onUpdateEmail(email, 'draft')
+			await onUpdateEmail(email, 'draft')
 			if (saveTimeout.current) {
 				clearTimeout(saveTimeout.current)
 			}
@@ -123,15 +123,15 @@ export function EmailEdit({ emailId, onUpdateEmail, onCloseEmail }) {
 
 	function handleSend(event) {
 		event.preventDefault()
-		handleSaveEmail ({ ...email, sentAt: new Date(), removedAt: null })
+		handleSaveEmail({ ...email, sentAt: new Date(), removedAt: null })
 		onCloseEmail()
 	}
 
 	function handleDelete(event) {
-        event.preventDefault()
-        handleSaveEmail({...email, removedAt: new Date()})
+		event.preventDefault()
+		handleSaveEmail({ ...email, removedAt: new Date() })
 		onCloseEmail()
-    }
+	}
 
 	function isEmailChanged(email1, email2) {
 		// eslint-disable-next-line no-unused-vars
@@ -163,9 +163,9 @@ export function EmailEdit({ emailId, onUpdateEmail, onCloseEmail }) {
 					</div>
 					<div className="email-edit__to-container two-items">
 						<label className="email-edit__to-label">To </label>
-						<input className="email-edit__to" type="email" value={toEmail} onChange={event => handleChange(event)} name="toEmail" required/>
+						<input className="email-edit__to" type="email" value={toEmail} onChange={event => handleChange(event)} name="toEmail" required />
 					</div>
-					<input className="email-edit__subject" type="text" placeholder="Subject" value={subject} onChange={event => handleChange(event)} name="subject" autoComplete="off"/>
+					<input className="email-edit__subject" type="text" placeholder="Subject" value={subject} onChange={event => handleChange(event)} name="subject" autoComplete="off" />
 					<textarea className="email-edit__body" type="text" value={body} onChange={event => handleChange(event)} name="body" />
 					<div className="email-edit__footer">
 						<button className="email-edit__footer-send">Send</button>
